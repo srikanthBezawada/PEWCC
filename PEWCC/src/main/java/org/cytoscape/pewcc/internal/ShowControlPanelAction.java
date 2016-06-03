@@ -5,7 +5,7 @@ import org.cytoscape.application.swing.AbstractCyAction;
 import static org.cytoscape.pewcc.internal.PEWCCapp.APPNAME;
 
 public class ShowControlPanelAction extends AbstractCyAction{
-    private final PEWCCgui gui; // he GUI that is activated by this action
+    private final PEWCCgui gui; //  GUI that is activated by this action
     
     public ShowControlPanelAction(PEWCCgui gui){
         super(APPNAME);
@@ -16,7 +16,7 @@ public class ShowControlPanelAction extends AbstractCyAction{
     /**
 	 * Adds the "PEWCC gui" to the Cytoscape control panel
 	 * 
-	 * If the ClusterONE control panel is already open, no new control panel
+	 * If the PEWCC control panel is already open, no new control panel
 	 * will be added, the existing one will be selected instead.
     */
     @Override

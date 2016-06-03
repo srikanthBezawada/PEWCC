@@ -17,7 +17,8 @@ import org.cytoscape.model.events.NetworkAddedEvent;
 import org.cytoscape.model.events.NetworkAddedListener;
 import org.cytoscape.model.events.NetworkDestroyedEvent;
 import org.cytoscape.model.events.NetworkDestroyedListener;
-import org.cytoscape.pewcc.logic.PEWCClogic;
+import org.cytoscape.pewcc.internal.logic.PEWCClogic;
+
 import org.cytoscape.view.model.CyNetworkView;
 
 /**
@@ -265,13 +266,17 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     }// </editor-fold>//GEN-END:initComponents
    
     private void startBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBActionPerformed
-        CyNetwork currentnetwork = getSelectedNetwork();
-        CyNetworkView currentnetworkview;
+        CyNetwork network = getSelectedNetwork();
+        CyNetworkView networkview;
         PEWCClogic logicThread;
-        if(currentnetwork != null){
-            currentnetworkview = pewccapp.getApplicationManager().getCurrentNetworkView();
-            logicThread = new PEWCClogic(this, currentnetwork, currentnetworkview, cliqueValueValidate(cliqueValue), joinPValueValidate(joinPValue));
+        if(network != null){
+            networkview = pewccapp.getApplicationManager().getCurrentNetworkView();
+            logicThread = new PEWCClogic(this, network, networkview, cliqueValueValidate(cliqueValue), joinPValueValidate(joinPValue));
             logicThread.start();
+            
+            
+            
+            
         } else{
             startB.setEnabled(false);
             JOptionPane.showMessageDialog(null, "IMPORT a network first! ", "No Network found ", JOptionPane.WARNING_MESSAGE);
