@@ -8,9 +8,17 @@ import java.util.TreeSet;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
+import org.cytoscape.application.events.SetCurrentNetworkListener;
+import org.cytoscape.application.swing.CySwingApplication;
+import org.cytoscape.application.swing.CytoPanel;
 import org.cytoscape.application.swing.CytoPanelComponent;
 import org.cytoscape.application.swing.CytoPanelName;
+import org.cytoscape.application.swing.CytoPanelState;
 import org.cytoscape.model.CyNetwork;
+import org.cytoscape.model.events.NetworkAddedEvent;
+import org.cytoscape.model.events.NetworkAddedListener;
+import org.cytoscape.model.events.NetworkDestroyedEvent;
+import org.cytoscape.model.events.NetworkDestroyedListener;
 import org.cytoscape.pewcc.logic.PEWCClogic;
 import org.cytoscape.view.model.CyNetworkView;
 
@@ -18,16 +26,15 @@ import org.cytoscape.view.model.CyNetworkView;
  * @author SrikanthB
  * GUI of the app, Control goes to logic from here
  */
-public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent {
+public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, NetworkAddedListener, NetworkDestroyedListener {
 
     /**
      * Creates new form CliqueUI
      */
-    private PEWCCcore pewcccore; 
-    public PEWCCgui(PEWCCcore pewcccore) {
+    private PEWCCapp pewccapp; 
+    public PEWCCgui(PEWCCapp pewccapp) {
         initComponents();
-        this.pewcccore = pewcccore;
-        updateNetworkList();
+        this.pewccapp = pewccapp;
     }
 
     /**
@@ -42,7 +49,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent {
     
     @Override
     public String getTitle() {
-        return CyActivator.APPNAME;
+        return pewccapp.APPNAME;
     }
     
     @Override
@@ -258,13 +265,13 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent {
                 .addGap(12, 12, 12))
         );
     }// </editor-fold>//GEN-END:initComponents
-
+   
     private void startBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBActionPerformed
         CyNetwork currentnetwork = getSelectedNetwork();
         CyNetworkView currentnetworkview;
         PEWCClogic logicThread;
         if(currentnetwork != null){
-            currentnetworkview = CyActivator.getCyApplicationManager().getCurrentNetworkView();
+            currentnetworkview = pewccapp.getApplicationManager().getCurrentNetworkView();
             logicThread = new PEWCClogic(this, currentnetwork, currentnetworkview, cliqueValueValidate(cliqueValue), joinPValueValidate(joinPValue));
             logicThread.start();
         } else{
@@ -283,7 +290,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent {
 
     private void exitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBActionPerformed
         // TODO add your handling code here:
-        pewcccore.closeStartMenu();
+        deactivate();
     }//GEN-LAST:event_exitBActionPerformed
     
     public void startComputation(){
@@ -327,6 +334,44 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent {
         
         return joinPValue;
     }
+    
+        protected void updateNetworkList() {
+        final Set<CyNetwork> networks = pewccapp.getNetworkManager().getNetworkSet();
+        final SortedSet<String> networkNames = new TreeSet<String>();
+
+        for (CyNetwork net : networks)
+                networkNames.add(net.getRow(net).get("name", String.class));
+
+        // Clear the comboBox
+        networkComboBox.setModel(new DefaultComboBoxModel());
+
+        for (String name : networkNames)
+                networkComboBox.addItem(name);
+
+        CyNetwork currNetwork = pewccapp.getApplicationManager().getCurrentNetwork();
+        if (currNetwork != null) {
+                String networkTitle = currNetwork.getRow(currNetwork).get("name", String.class);
+                networkComboBox.setSelectedItem(networkTitle);			
+        }
+    }
+    
+    
+    public void addItemListener(final ItemListener newListener) {
+        networkComboBox.addItemListener(newListener);
+    }
+    
+    public CyNetwork getSelectedNetwork() {
+        for (CyNetwork net : pewccapp.getNetworkManager().getNetworkSet()) {
+                String networkTitle = net.getRow(net).get("name", String.class);
+                if (networkTitle.equals(networkComboBox.getSelectedItem()))
+                        return net;
+        }
+
+        return null;
+    }
+   
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel cliqueLabel;
@@ -347,39 +392,42 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent {
     private javax.swing.JLabel statusLabel;
     private javax.swing.JPanel statusPanel;
     // End of variables declaration//GEN-END:variables
-    protected void updateNetworkList() {
-        final Set<CyNetwork> networks = CyActivator.getCyNetworkManager().getNetworkSet();
-        final SortedSet<String> networkNames = new TreeSet<String>();
+    @Override
+    public void handleEvent(NetworkAddedEvent e){
+        CyNetwork net = e.getNetwork();
+        String title = net.getRow(net).get(CyNetwork.NAME, String.class);
+        ((DefaultComboBoxModel)this.networkComboBox.getModel()).addElement(title);
+    }
 
-        for (CyNetwork net : networks)
-                networkNames.add(net.getRow(net).get("name", String.class));
-
-        // Clear the comboBox
-        networkComboBox.setModel(new DefaultComboBoxModel());
-
-        for (String name : networkNames)
-                networkComboBox.addItem(name);
-
-        CyNetwork currNetwork = CyActivator.getCyApplicationManager().getCurrentNetwork();
-        if (currNetwork != null) {
-                String networkTitle = currNetwork.getRow(currNetwork).get("name", String.class);
-                networkComboBox.setSelectedItem(networkTitle);			
-        }
+    @Override
+    public void handleEvent(NetworkDestroyedEvent e){
+        updateNetworkList();
     }
     
     
-    public void addItemListener(final ItemListener newListener) {
-        networkComboBox.addItemListener(newListener);
+    public void activate() {
+        pewccapp.registerService(this, CytoPanelComponent.class);
+        pewccapp.registerService(this, NetworkAddedListener.class);
+        pewccapp.registerService(this, NetworkDestroyedListener.class);
+        CytoPanel cytoPanel = pewccapp.getCySwingApplication().getCytoPanel(getCytoPanelName());
+        /* Ensure that the panel is visible */
+        if (cytoPanel.getState() == CytoPanelState.HIDE) {
+                cytoPanel.setState(CytoPanelState.DOCK);
+        }
+        setVisible(true);
+
+        /* Activate the panel */
+        cytoPanel.setSelectedIndex(cytoPanel.indexOfComponent(getComponent()));
+        updateNetworkList();
     }
     
-    public CyNetwork getSelectedNetwork() {
-        for (CyNetwork net : CyActivator.getCyNetworkManager().getNetworkSet()) {
-                String networkTitle = net.getRow(net).get("name", String.class);
-                if (networkTitle.equals(networkComboBox.getSelectedItem()))
-                        return net;
-        }
-
-        return null;
+    /**
+     * Deactivates and hides the control panel.
+     */
+    public void deactivate() {
+        pewccapp.unregisterService(this, CytoPanelComponent.class);
+        pewccapp.unregisterService(this, NetworkAddedListener.class);
+        pewccapp.unregisterService(this, NetworkDestroyedListener.class);
     }
          
 }
