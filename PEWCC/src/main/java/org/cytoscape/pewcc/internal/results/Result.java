@@ -1,11 +1,11 @@
 package org.cytoscape.pewcc.internal.results;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Result {
-    private List<Complex> complexes = new ArrayList<Complex>();
+    private Set<Complex> complexes = new HashSet<Complex>();
     
     public void add(Complex c) {
         complexes.add(c);
@@ -15,7 +15,7 @@ public class Result {
         complexes.remove(c);
     }
     
-    public List<Complex> getComplexes() {
+    public Set<Complex> getComplexes() {
         return complexes;
     }
 }
