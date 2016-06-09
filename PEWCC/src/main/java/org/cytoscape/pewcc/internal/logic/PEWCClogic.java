@@ -34,7 +34,7 @@ public class PEWCClogic extends Thread {
     
     public void run(){
         CyRootNetwork root = ((CySubNetwork)network).getRootNetwork();
-        CySubNetwork subNet, subNetTemp;
+        CyNetwork subNet, subNetTemp;
         List<CyNode> nodeList = network.getNodeList();
         List<CyNode> remnodeList = new ArrayList<CyNode>();
         List<CyNode> rejoinList = new ArrayList<CyNode>();
@@ -46,23 +46,19 @@ public class PEWCClogic extends Thread {
         
         Result res = new Result();
         for(CyNode cprotein : nodeList) {
-            System.out.println(network.getRow(cprotein).get(CyNetwork.NAME, String.class));
+            //System.out.println("Working on Central protein with name :  " +network.getRow(cprotein).get(CyNetwork.NAME, String.class));
             neighbourNodeList = network.getNeighborList(cprotein, CyEdge.Type.ANY);
             neighbourNodeList.add(cprotein);
-            if(neighbourNodeList.size() > 4) {
+            if(neighbourNodeList.size() > 3) {
                 neightbourEdgeList =  findNeighbourEdges(edgeList, neighbourNodeList);
-                subNet = root.addSubNetwork();
-                subNetTemp = root.addSubNetwork();
-                for(CyEdge e : neightbourEdgeList) {
-                    subNet.addEdge(e);
-                    subNetTemp.addEdge(e);
-                }
+                subNet = root.addSubNetwork(neighbourNodeList, neightbourEdgeList);
+                subNetTemp = root.addSubNetwork(neighbourNodeList, neightbourEdgeList);
                 
-
-                while(subNetTemp.getNodeCount() > 4) {
+                while(subNetTemp.getNodeCount() > 3) {
                     wcc = findwcc(subNetTemp, cprotein);
                     remnodeList.add(findNodeToRemove(subNetTemp, cprotein));
                     subNetTemp.removeNodes(remnodeList);
+                    remnodeList.clear();
                 }
 
                 for(CyNode n : neighbourNodeList) {
@@ -70,13 +66,16 @@ public class PEWCClogic extends Thread {
                         continue;
                     }
                     for(CyNode x : subNetTemp.getNodeList()) {
-                        if(subNetTemp.containsEdge(x, n) || subNetTemp.containsEdge(x, n)) {
+                        if(subNet.containsEdge(x, n) || subNet.containsEdge(x, n)) {
                             counter++;
                         }
                     }
 
-                    if(counter/(double)(subNetTemp.getNodeCount()) > joinPValue)
-                    rejoinList.add(n);
+                    if(counter/(double)(subNetTemp.getNodeCount()) > joinPValue){
+                        rejoinList.add(n);
+                        //System.out.print("!!!!!!!!!hello!!!!!!");
+                    }
+                    
                 }
                 
                 for(CyNode n: neighbourNodeList) {
@@ -92,6 +91,14 @@ public class PEWCClogic extends Thread {
                     coll.clear();
                 }
                 
+                
+                for(CyNode n:subNet.getNodeList()) {
+                    //System.out.println("----Subnet node---");
+                    //printNode(subNet, n);
+                    //System.out.println("----Subnet node----");
+                }
+                
+                
                 Complex C = new Complex(cprotein, subNet.getNodeList(), subNet.getEdgeList(), wcc);
                 res.add(C);
                 neighbourNodeList.clear();
@@ -100,17 +107,16 @@ public class PEWCClogic extends Thread {
                 remnodeList.clear();
                 subNetTemp.dispose();
             } 
-            else {
-            }
+            
 
         }
         
         for(Complex c : res.getComplexes()) {
-            System.out.println("------");
+            System.out.println(" Printing complexes ------");
             for(CyNode n : c.subnodeList) {
                 System.out.println(network.getRow(n).get(CyNetwork.NAME, String.class));
             }
-            System.out.println("-------");
+            System.out.println(" Printing complexes -------");
         }
         
         
@@ -156,9 +162,9 @@ public class PEWCClogic extends Thread {
     }
 
     public CyNode findNodeToRemove(CyNetwork tempNet, CyNode cp){
-        CyNode toRemove = tempNet.getNodeList().get(1);
+        CyNode toRemove = tempNet.getNodeList().get(0);
         if(cp.equals(toRemove)) {
-            toRemove = tempNet.getNodeList().get(0);
+            toRemove = tempNet.getNodeList().get(1);
         }
         for(CyNode n:tempNet.getNodeList()) {
             if(n.equals(cp))
@@ -168,6 +174,10 @@ public class PEWCClogic extends Thread {
             }
         }
         return toRemove;
+    }
+    
+    public void printNode(CyNetwork network, CyNode n) {
+        System.out.println("node" +network.getRow(n).get(CyNetwork.NAME, String.class));
     }
     
     
