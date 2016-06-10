@@ -102,7 +102,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
 
         joinPLabel.setText("Join parameter");
 
-        joinPValue.setText("0.3");
+        joinPValue.setText("0.5");
 
         javax.swing.GroupLayout networkPanelLayout = new javax.swing.GroupLayout(networkPanel);
         networkPanel.setLayout(networkPanelLayout);

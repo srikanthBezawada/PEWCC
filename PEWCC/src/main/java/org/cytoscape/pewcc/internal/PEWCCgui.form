@@ -187,7 +187,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="joinPValue">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="0.3"/>
+                    <Property name="text" type="java.lang.String" value="0.5"/>
                   </Properties>
                 </Component>
               </SubComponents>
