@@ -10,6 +10,7 @@ public class PEWCCapp {
     private CytoscapeAppActivator activator;
     private CySwingApplication app;
     private PEWCCgui gui;
+    private ShowControlPanelAction scpa;
     public static final String APPNAME = "PEWCC - 1.0";
     
     public PEWCCapp(CytoscapeAppActivator activator) {
@@ -20,9 +21,9 @@ public class PEWCCapp {
     private void initialize() {
         this.app = activator.getService(CySwingApplication.class);
         this.gui = new PEWCCgui(this);
-        
+        scpa = new ShowControlPanelAction(gui);
         // Add the actions on the app
-        app.addAction(new ShowControlPanelAction(gui));
+        app.addAction(scpa);
     }
     
     
@@ -37,7 +38,9 @@ public class PEWCCapp {
     
     
     
-    
+    public ShowControlPanelAction getscpAction(){
+        return scpa;
+    }
     
     
     public PEWCCgui getGui(){

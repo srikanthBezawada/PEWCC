@@ -30,7 +30,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     /**
      * Creates new form CliqueUI
      */
-    private PEWCCapp pewccapp; 
+    private PEWCCapp pewccapp;
     public PEWCCgui(PEWCCapp pewccapp) {
         initComponents();
         this.pewccapp = pewccapp;
@@ -428,6 +428,8 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
      * Deactivates and hides the control panel.
      */
     public void deactivate() {
+        pewccapp.getCySwingApplication().removeAction(pewccapp.getscpAction());
+        
         pewccapp.unregisterService(this, CytoPanelComponent.class);
         pewccapp.unregisterService(this, NetworkAddedListener.class);
         pewccapp.unregisterService(this, NetworkDestroyedListener.class);
