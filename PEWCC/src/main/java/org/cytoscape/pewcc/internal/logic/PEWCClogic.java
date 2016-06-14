@@ -13,9 +13,6 @@ import org.cytoscape.pewcc.internal.PEWCCgui;
 import org.cytoscape.pewcc.internal.results.Complex;
 import org.cytoscape.pewcc.internal.results.Result;
 import org.cytoscape.view.model.CyNetworkView;
-import org.jgrapht.UndirectedGraph;
-import org.jgrapht.alg.BronKerboschCliqueFinder;
-import org.jgrapht.graph.SimpleGraph;
 
 public class PEWCClogic extends Thread {
     CyNetwork network;
@@ -89,8 +86,14 @@ public class PEWCClogic extends Thread {
                     subNet.removeNodes(coll); 
                     coll.clear();
                 }
-                
-                
+                /*
+                System.out.println("Complex");
+                for(CyNode n:subNet.getNodeList()) {
+                    printNode(subNet, n);
+                }
+                System.out.println(" : "+ wcc);
+                System.out.println("Complex");
+                */
                 Complex C = new Complex(cprotein, subNet.getNodeList(), subNet.getEdgeList(), wcc);
                 res.add(C);
                 neighbourNodeList.clear();
@@ -103,12 +106,13 @@ public class PEWCClogic extends Thread {
 
         }
         /*
-        System.out.println(" Printing complexes Start------");
+        System.out.println(" Printing complexes Start after removing duplicates------");
         for(Complex c : res.getComplexes()) {
             System.out.println("------");
             for(CyNode n : c.subnodeList) {
                 System.out.println(network.getRow(n).get(CyNetwork.NAME, String.class));
             }
+            System.out.println("wcc : "+c.getwcc());
             System.out.println("------");
         }
         System.out.println(" End -------");
@@ -129,26 +133,20 @@ public class PEWCClogic extends Thread {
 
 
     public double findwcc(CyNetwork tempNet, CyNode centerNode) { // finds weighted clustering coefficient
-        UndirectedGraph<CyNode, CyEdge> g = new SimpleGraph<CyNode, CyEdge>(CyEdge.class);
         List<CyNode> tnList = tempNet.getNodeList();
         List<CyEdge> teList = tempNet.getEdgeList();
-        for(CyNode n : tnList){
-            g.addVertex(n);
-        }
-        for(CyEdge e : teList){
-            if(e.getSource().equals(e.getTarget())){
-                continue; // removing self-loops
-            }
-            g.addEdge(e.getSource(), e.getTarget(),e);
-        }
-        BronKerboschCliqueFinder bcfinder = new BronKerboschCliqueFinder(g);
-        List<Set<CyNode>> allCliques = (List<Set<CyNode>>)bcfinder.getAllMaximalCliques();
-        int cliques = 0;
-        for (Set<CyNode> set : allCliques) {
-            if(set.size() == cliqueNumber && set.contains(centerNode)) {
-                cliques++;
+        int cliques=0;
+        for(CyEdge e:teList) {
+            for(CyNode n:tnList) {
+                if(tempNet.containsEdge(n, e.getSource()) || tempNet.containsEdge(n, e.getSource())) {
+                    if(tempNet.containsEdge(n, e.getTarget()) || tempNet.containsEdge(n, e.getTarget())) {
+                        if(n.equals(centerNode) || n.equals(e.getSource()) || n.equals(e.getTarget()))
+                        cliques++;
+                    }
+                }
             }
         }
+        
         double ni = tempNet.getNeighborList(centerNode, CyEdge.Type.ANY).size();
         ni = (ni*ni)*(ni - 1);
         

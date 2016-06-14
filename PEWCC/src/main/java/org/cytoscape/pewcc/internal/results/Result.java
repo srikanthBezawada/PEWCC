@@ -8,8 +8,8 @@ public class Result {
     private Set<Complex> complexes = new HashSet<Complex>();
     
     public void add(Complex c) {
-        complexes.add(c);
-    }
+                    complexes.add(c);
+                }
     
     public void remove(Complex c) {
         complexes.remove(c);
