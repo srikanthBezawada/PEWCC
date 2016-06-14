@@ -30,6 +30,8 @@ public class PEWCClogic extends Thread {
     }
     
     public void run(){
+        gui.startComputation();
+        long startTime = System.currentTimeMillis();
         CyRootNetwork root = ((CySubNetwork)network).getRootNetwork();
         CyNetwork subNet, subNetTemp;
         List<CyNode> nodeList = network.getNodeList();
@@ -117,6 +119,11 @@ public class PEWCClogic extends Thread {
         }
         System.out.println(" End -------");
         */
+        
+        long endTime = System.currentTimeMillis();
+        long difference = endTime - startTime;
+        System.out.println("Execution time for PE-measure algo: " + difference +" milli seconds");
+        gui.endComputation();
         
     }
     
