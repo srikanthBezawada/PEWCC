@@ -145,8 +145,8 @@ public class PEWCClogic extends Thread {
         int cliques=0;
         for(CyEdge e:teList) {
             for(CyNode n:tnList) {
-                if(tempNet.containsEdge(n, e.getSource()) || tempNet.containsEdge(n, e.getSource())) {
-                    if(tempNet.containsEdge(n, e.getTarget()) || tempNet.containsEdge(n, e.getTarget())) {
+                if(tempNet.containsEdge(n, e.getSource()) || tempNet.containsEdge(e.getSource(), n)) {
+                    if(tempNet.containsEdge(n, e.getTarget()) || tempNet.containsEdge(e.getTarget(), n)) {
                         if(n.equals(centerNode) || n.equals(e.getSource()) || n.equals(e.getTarget()))
                         cliques++;
                     }
