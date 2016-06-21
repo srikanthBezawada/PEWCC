@@ -1,9 +1,7 @@
-package org.cytoscape.pewcc.internal.results;
-
+package org.cytoscape.pewcc.internal.logic;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.cytoscape.model.CyEdge;
 import org.cytoscape.model.CyNode;
 

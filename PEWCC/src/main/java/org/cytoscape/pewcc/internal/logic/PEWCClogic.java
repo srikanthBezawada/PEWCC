@@ -9,28 +9,24 @@ import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.CyNode;
 import org.cytoscape.model.subnetwork.CyRootNetwork;
 import org.cytoscape.model.subnetwork.CySubNetwork;
-import org.cytoscape.pewcc.internal.PEWCCgui;
-import org.cytoscape.pewcc.internal.results.Complex;
-import org.cytoscape.pewcc.internal.results.Result;
-import org.cytoscape.view.model.CyNetworkView;
+import org.cytoscape.pewcc.internal.PEWCCapp;
+
 
 public class PEWCClogic extends Thread {
     CyNetwork network;
-    CyNetworkView networkView;
-    PEWCCgui gui;
+    PEWCCapp pewccapp;
     double joinPValue;
     int cliqueNumber;
     
-    public PEWCClogic(PEWCCgui gui, CyNetwork currentnetwork, CyNetworkView currentnetworkview, int cliqueNumber, double joinPValue) {
-        this.gui = gui;
+    public PEWCClogic(PEWCCapp pewccapp, CyNetwork currentnetwork, int cliqueNumber, double joinPValue) {
+        this.pewccapp = pewccapp;
         this.network = currentnetwork;
-        this.networkView = currentnetworkview;
         this.joinPValue = joinPValue;
         this.cliqueNumber = cliqueNumber;
     }
     
     public void run(){
-        gui.startComputation();
+        pewccapp.getGui().startComputation();
         long startTime = System.currentTimeMillis();
         CyRootNetwork root = ((CySubNetwork)network).getRootNetwork();
         CyNetwork subNet, subNetTemp;
@@ -88,14 +84,14 @@ public class PEWCClogic extends Thread {
                     subNet.removeNodes(coll); 
                     coll.clear();
                 }
-                /*
+                
                 System.out.println("Complex");
                 for(CyNode n:subNet.getNodeList()) {
                     printNode(subNet, n);
                 }
                 System.out.println(" : "+ wcc);
                 System.out.println("Complex");
-                */
+                
                 Complex C = new Complex(cprotein, subNet.getNodeList(), subNet.getEdgeList(), wcc);
                 res.add(C);
                 neighbourNodeList.clear();
@@ -107,7 +103,7 @@ public class PEWCClogic extends Thread {
             
 
         }
-        /*
+        
         System.out.println(" Printing complexes Start after removing duplicates------");
         for(Complex c : res.getComplexes()) {
             System.out.println("------");
@@ -118,12 +114,12 @@ public class PEWCClogic extends Thread {
             System.out.println("------");
         }
         System.out.println(" End -------");
-        */
+        
         
         long endTime = System.currentTimeMillis();
         long difference = endTime - startTime;
         System.out.println("Execution time for PE-measure algo: " + difference +" milli seconds");
-        gui.endComputation();
+        pewccapp.getGui().endComputation();
         
     }
     
@@ -147,8 +143,9 @@ public class PEWCClogic extends Thread {
             for(CyNode n:tnList) {
                 if(tempNet.containsEdge(n, e.getSource()) || tempNet.containsEdge(e.getSource(), n)) {
                     if(tempNet.containsEdge(n, e.getTarget()) || tempNet.containsEdge(e.getTarget(), n)) {
-                        if(n.equals(centerNode) || n.equals(e.getSource()) || n.equals(e.getTarget()))
-                        cliques++;
+                        if(n.equals(centerNode) || n.equals(e.getSource()) || n.equals(e.getTarget())) {
+                            cliques++;
+                        }
                     }
                 }
             }
@@ -171,11 +168,11 @@ public class PEWCClogic extends Thread {
         }
         return toRemove;
     }
-    /*
+    
     public void printNode(CyNetwork network, CyNode n) {
         System.out.println("node" +network.getRow(n).get(CyNetwork.NAME, String.class));
     }
-    */
+    
     
     
 }

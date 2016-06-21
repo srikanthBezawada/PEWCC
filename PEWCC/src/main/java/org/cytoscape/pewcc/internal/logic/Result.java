@@ -1,4 +1,4 @@
-package org.cytoscape.pewcc.internal.results;
+package org.cytoscape.pewcc.internal.logic;
 
 
 import java.util.HashSet;

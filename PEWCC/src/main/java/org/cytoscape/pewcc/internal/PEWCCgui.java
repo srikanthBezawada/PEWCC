@@ -248,19 +248,15 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     private void startBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBActionPerformed
         CyNetwork network = getSelectedNetwork();
         CyNetworkView networkview;
-        PEWCClogic logicThread;
+       
         if(network != null){
             networkview = pewccapp.getApplicationManager().getCurrentNetworkView();
-            logicThread = new PEWCClogic(this, network, networkview, cliqueValueValidate(cliqueValue), joinPValueValidate(joinPValue));
-            logicThread.start();
-            
-            
-            
+            pewccapp.runAlgorithm(network,cliqueValueValidate(cliqueValue), joinPValueValidate(joinPValue));
             
         } else{
             startB.setEnabled(false);
             JOptionPane.showMessageDialog(null, "IMPORT a network first! ", "No Network found ", JOptionPane.WARNING_MESSAGE);
-        }  
+        }    
     }//GEN-LAST:event_startBActionPerformed
 
     private void helpBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBActionPerformed
