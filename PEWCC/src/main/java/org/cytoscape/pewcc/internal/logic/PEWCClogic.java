@@ -9,20 +9,21 @@ import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.CyNode;
 import org.cytoscape.model.subnetwork.CyRootNetwork;
 import org.cytoscape.model.subnetwork.CySubNetwork;
+import org.cytoscape.pewcc.internal.PEWCCapp;
 import org.cytoscape.pewcc.internal.PEWCCgui;
-import org.cytoscape.pewcc.internal.results.Complex;
-import org.cytoscape.pewcc.internal.results.Result;
+import org.cytoscape.pewcc.internal.logic.PEWCCCluster;
+import org.cytoscape.pewcc.internal.logic.Result;
 import org.cytoscape.view.model.CyNetworkView;
 
 public class PEWCClogic extends Thread {
     CyNetwork network;
     CyNetworkView networkView;
-    PEWCCgui gui;
+    PEWCCapp pewccapp;
     double joinPValue;
     int cliqueNumber;
     
-    public PEWCClogic(PEWCCgui gui, CyNetwork currentnetwork, CyNetworkView currentnetworkview, int cliqueNumber, double joinPValue) {
-        this.gui = gui;
+    public PEWCClogic(PEWCCapp pewccapp, CyNetwork currentnetwork, CyNetworkView currentnetworkview, int cliqueNumber, double joinPValue) {
+        this.pewccapp = pewccapp;
         this.network = currentnetwork;
         this.networkView = currentnetworkview;
         this.joinPValue = joinPValue;
@@ -30,7 +31,7 @@ public class PEWCClogic extends Thread {
     }
     
     public void run(){
-        gui.startComputation();
+        pewccapp.getGui().startComputation();
         long startTime = System.currentTimeMillis();
         CyRootNetwork root = ((CySubNetwork)network).getRootNetwork();
         CyNetwork subNet, subNetTemp;
@@ -43,7 +44,7 @@ public class PEWCClogic extends Thread {
         int counter = 0;
         double wcc = 0.0;
         
-        Result res = new Result();
+        Result result = new Result();
         for(CyNode cprotein : nodeList) {
             neighbourNodeList = network.getNeighborList(cprotein, CyEdge.Type.ANY);
             neighbourNodeList.add(cprotein);
@@ -96,8 +97,8 @@ public class PEWCClogic extends Thread {
                 System.out.println(" : "+ wcc);
                 System.out.println("Complex");
                 */
-                Complex C = new Complex(cprotein, subNet.getNodeList(), subNet.getEdgeList(), wcc);
-                res.add(C);
+                PEWCCCluster C = new PEWCCCluster(subNet, cprotein, wcc);
+                result.add(C);
                 neighbourNodeList.clear();
                 neightbourEdgeList.clear();
                 rejoinList.clear();
@@ -120,10 +121,13 @@ public class PEWCClogic extends Thread {
         System.out.println(" End -------");
         */
         
+        
+        pewccapp.resultsCalculated(result, network);
+        
         long endTime = System.currentTimeMillis();
         long difference = endTime - startTime;
-        System.out.println("Execution time for PE-measure algo: " + difference +" milli seconds");
-        gui.endComputation();
+        System.out.println("Execution time for PEWCC algo: " + difference +" milli seconds");
+        pewccapp.getGui().endComputation();
         
     }
     

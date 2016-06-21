@@ -1,5 +1,6 @@
 package org.cytoscape.pewcc.internal;
 
+import java.net.URL;
 import java.util.Properties;
 import org.cytoscape.service.util.AbstractCyActivator;
 import org.cytoscape.service.util.CyServiceRegistrar;
@@ -78,7 +79,12 @@ public class CytoscapeAppActivator extends AbstractCyActivator {
             registrar.unregisterService(object, cls);
     }
         
-        
+    /**
+    * Returns URL of the resource with the given name from the plugin bundle.
+    */
+    public URL getResource(String name) {
+            return context.getBundle().getEntry(name);
+    }    
         
 }
 

@@ -1,22 +1,25 @@
-package org.cytoscape.pewcc.internal.results;
+package org.cytoscape.pewcc.internal.logic;
 
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.cytoscape.model.CyEdge;
+import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.CyNode;
+import org.cytoscape.pewcc.internal.logic.utils.CyNodeUtil;
 
-public class Complex {
-    public List<CyNode> subnodeList;
-    public List<CyEdge> subedgeList;
+public class PEWCCCluster {
+    private CyNetwork subnetwork;
+    private List<CyNode> subnodeList;
+    private List<CyEdge> subedgeList;
     private double wcc;
     private CyNode centernode;
     
-    public Complex(CyNode centernode, List<CyNode> subnodeList, List<CyEdge> subedgeList, double wcc) {
+    public PEWCCCluster(CyNetwork subnetwork, CyNode centernode, double wcc) {
+        this.subnetwork = subnetwork;
         this.centernode = centernode;
-        this.subnodeList = subnodeList;
-        this.subedgeList = subedgeList;
+        this.subnodeList = subnetwork.getNodeList();
+        this.subedgeList = subnetwork.getEdgeList();
         this.wcc = wcc;
     }
     
@@ -24,16 +27,28 @@ public class Complex {
         return this.wcc;
     }
     
+    public List<CyNode> getNodes() {
+        return this.subnodeList;
+    }
+    
+    public List<CyEdge> getEdges() {
+        return this.subedgeList;
+    }
+    
     public void setwcc(double wcc) {
         this.wcc = wcc;
     }
     
+    public CyNetwork getSubnetwork(){
+        return subnetwork;
+    }
+    
     @Override
     public boolean equals(Object otherComplex) {
-        if (!(otherComplex instanceof Complex)) {
+        if (!(otherComplex instanceof PEWCCCluster)) {
             return false;
         }    
-        Complex otherComplexRef = (Complex)otherComplex;
+        PEWCCCluster otherComplexRef = (PEWCCCluster)otherComplex;
         if(otherComplexRef.subnodeList.size() != this.subnodeList.size() || otherComplexRef.subedgeList.size() != otherComplexRef.subedgeList.size()) {
             return false;
         }
@@ -60,6 +75,18 @@ public class Complex {
             hashCode = hashCode+e.hashCode();
         }
         return hashCode;
+    }
+    
+    public String[] getMemberNames() {
+        String[] result = new String[this.subnodeList.size()];
+        int i = 0;
+        
+        for(CyNode n : subnodeList){
+            result[i] = CyNodeUtil.getName(subnetwork, n);
+            i++;
+        }
+        
+        return result;  
     }
     
 }

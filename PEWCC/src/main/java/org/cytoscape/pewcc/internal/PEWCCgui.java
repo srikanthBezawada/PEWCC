@@ -251,11 +251,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         PEWCClogic logicThread;
         if(network != null){
             networkview = pewccapp.getApplicationManager().getCurrentNetworkView();
-            logicThread = new PEWCClogic(this, network, networkview, cliqueValueValidate(cliqueValue), joinPValueValidate(joinPValue));
-            logicThread.start();
-            
-            
-            
+            pewccapp.runAlgorithm(network, networkview, cliqueValueValidate(cliqueValue), joinPValueValidate(joinPValue));
             
         } else{
             startB.setEnabled(false);
