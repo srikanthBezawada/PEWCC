@@ -1,5 +1,6 @@
 package org.cytoscape.pewcc.internal.logic;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -146,22 +147,31 @@ public class PEWCClogic extends Thread {
     public double findwcc(CyNetwork tempNet, CyNode centerNode) { // finds weighted clustering coefficient
         List<CyNode> tnList = tempNet.getNodeList();
         List<CyEdge> teList = tempNet.getEdgeList();
-        int cliques=0;
+        int cliques = 0;
+        double result;
+        Set<ThreeClique> cliqueSet = new HashSet<ThreeClique>();
         for(CyEdge e:teList) {
             for(CyNode n:tnList) {
+                if(n.equals(e.getSource()) || n.equals(e.getTarget())) {
+                    continue;
+                }
+                
                 if(tempNet.containsEdge(n, e.getSource()) || tempNet.containsEdge(e.getSource(), n)) {
                     if(tempNet.containsEdge(n, e.getTarget()) || tempNet.containsEdge(e.getTarget(), n)) {
-                        if(n.equals(centerNode) || n.equals(e.getSource()) || n.equals(e.getTarget()))
-                        cliques++;
+                        if(n.equals(centerNode) || e.getSource().equals(centerNode) || e.getTarget().equals(centerNode)){
+                            cliqueSet.add(new ThreeClique(n, e.getSource(), e.getTarget()));
+                        }
                     }
                 }
             }
         }
-        
+        cliques = cliqueSet.size();
+        //System.out.println(cliques);
         double ni = tempNet.getNeighborList(centerNode, CyEdge.Type.ANY).size();
         ni = (ni*ni)*(ni - 1);
-        
-        return (2*cliques)/(ni);
+        result = (2*cliques)/(ni);
+        DecimalFormat df = new DecimalFormat("####0.00");
+        return Double.parseDouble(df.format(result));
     }
 
     public CyNode findNodeToRemove(CyNetwork tempNet, CyNode cp){
