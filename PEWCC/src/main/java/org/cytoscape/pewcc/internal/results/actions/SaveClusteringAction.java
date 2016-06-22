@@ -26,15 +26,7 @@ public class SaveClusteringAction extends SaveClusterAction {
 		this.putValue(AbstractAction.MNEMONIC_KEY, KeyEvent.VK_V);
 		this.putValue(AbstractAction.SHORT_DESCRIPTION,
 				"Save the clustering to a file");
-		
-		PEWCCapp app = resultViewer.getCytoscapeApp();
-                //this.putValue(AbstractAction.SMALL_ICON, UIManager.getIcon("FileView.computerIcon"));
-                this.putValue(AbstractAction.SMALL_ICON, UIManager.getIcon("InternalFrame.maximizeIcon"));
-                /*
-                URL url = app.getResource(app.getResourcePathName() + "/save.png");
-		if (url != null) {
-			this.putValue(AbstractAction.SMALL_ICON, new ImageIcon(url));
-		}*/
+                this.putValue(AbstractAction.SMALL_ICON, UIManager.getIcon("OptionPane.informationIcon"));
 	}
 
 	/**

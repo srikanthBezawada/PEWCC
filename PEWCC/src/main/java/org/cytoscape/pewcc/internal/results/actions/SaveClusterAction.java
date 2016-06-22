@@ -12,13 +12,13 @@ import javax.swing.AbstractAction;
 import org.cytoscape.pewcc.internal.PEWCCapp;
 import org.cytoscape.pewcc.internal.logic.PEWCCCluster;
 import org.cytoscape.pewcc.internal.results.CytoscapeResultViewerPanel;
+import org.cytoscape.pewcc.internal.results.io.ClusteringWriter;
+import org.cytoscape.pewcc.internal.results.io.ClusteringWriterFactory;
 
 import org.cytoscape.util.swing.FileChooserFilter;
 import org.cytoscape.util.swing.FileUtil;
 
-//import uk.ac.rhul.cs.cl1.NodeSet;
-//import uk.ac.rhul.cs.cl1.io.ClusteringWriter;
-//import uk.ac.rhul.cs.cl1.io.ClusteringWriterFactory;
+
 
 /**
  * Action that saves the names of the members of the selected clusters
@@ -56,8 +56,7 @@ public class SaveClusterAction extends AbstractAction {
 	}
 	
 	public void actionPerformed(ActionEvent arg0) {
-		/*
-                ClusteringWriterFactory.Format[] formats =
+		ClusteringWriterFactory.Format[] formats =
 			ClusteringWriterFactory.Format.values();
 		FileChooserFilter[] filters = new FileChooserFilter[formats.length];
 		
@@ -82,14 +81,17 @@ public class SaveClusterAction extends AbstractAction {
 		if (format == null) {
 			pewccapp.showErrorMessage("The extension of the given filename does not correspond to\n"+
 					"any of the known formats. Please use one of the default\n"+
-					"extensions (.tab for GenePro files, .txt for cluster lists, "+
-					".csv for CSV cluster lists).");
+					"extensions (.csv for CSV cluster lists, .txt for cluster lists ");
 			return;
 		}
 		
 		ClusteringWriter wr = ClusteringWriterFactory.fromFormat(format);
-                wr.writeClustering(this.getNodeListsToBeSaved(), file);
-                // TODO - add try catch
-                */
+		try {
+			wr.writeClustering(this.getNodeListsToBeSaved(), file);
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+			pewccapp.showErrorMessage("I/O error while trying to save the selected clusters to\n"+
+					file.getAbsolutePath());
+		}
 	}
 }

@@ -462,7 +462,7 @@ public class CytoscapeResultViewerPanel extends ResultViewerPanel implements
 		public CloseAction(CytoscapeResultViewerPanel panel) {
 			super("Close");
 			this.panel = panel;
-			this.putValue(AbstractAction.SMALL_ICON, UIManager.getIcon("InternalFrame.closeIcon"));
+			this.putValue(AbstractAction.SMALL_ICON, UIManager.getIcon("OptionPane.errorIcon"));
 			this.putValue(AbstractAction.SHORT_DESCRIPTION,
 				"Close this result panel");
                     

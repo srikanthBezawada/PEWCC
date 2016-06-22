@@ -18,7 +18,7 @@ public class NodeSetDetails implements Comparable<NodeSetDetails>{
         sb.append(cluster.getEdges().size());
         sb.append("<br>");
 
-        sb.append("Weighted clustering coefficient: ");
+        sb.append("Clustering coefficient: ");
         sb.append(cluster.getwcc());
         sb.append("<br>");
 

@@ -7,6 +7,7 @@ import org.cytoscape.model.CyEdge;
 import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.CyNode;
 import org.cytoscape.pewcc.internal.logic.utils.CyNodeUtil;
+import org.cytoscape.pewcc.internal.logic.utils.StringUtils;
 
 public class PEWCCCluster {
     private CyNetwork subnetwork;
@@ -87,6 +88,13 @@ public class PEWCCCluster {
         }
         
         return result;  
+    }
+    
+    /**
+    * Prints the nodes in this set to a string using a given separator
+    */
+    public String toString(String separator) {
+            return StringUtils.join(getMemberNames(), separator);
     }
     
 }
