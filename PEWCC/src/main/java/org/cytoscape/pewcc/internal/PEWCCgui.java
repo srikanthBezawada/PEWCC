@@ -280,7 +280,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     
     public void endComputation(){
         statusBar.setIndeterminate(false);
-        statusLabel.setText("<html> Completed detecting complexes in the current network ! <br> You might want to recompute with different inputs <html>");
+        statusLabel.setText("<html>Completed complex detection, Check Results Panel!<br>You might want to recompute with different inputs <html>");
         startB.setEnabled(true);
     }
     
