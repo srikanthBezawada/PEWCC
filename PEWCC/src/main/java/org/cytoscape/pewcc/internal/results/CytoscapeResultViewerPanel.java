@@ -68,7 +68,7 @@ public class CytoscapeResultViewerPanel extends ResultViewerPanel implements
 	 * This is used to assign unique numbers to each result panel in Cytoscape
 	 */
 	static private int lastUsedSerialNumber = 1;
-	
+	protected int clustersExtracted = 0;
 	/**
 	 * Mapping from node IDs to real Cytoscape {@link CyNode} objects
 	 */
@@ -522,4 +522,13 @@ public class CytoscapeResultViewerPanel extends ResultViewerPanel implements
 			this.setNetworkView(newNetworkView);
 		}
 	}
+        
+        public void incrementClusterCount() {
+            clustersExtracted++;
+        }
+        
+        public int getclustersExtracted() {
+            return clustersExtracted;
+        }
+        
 }

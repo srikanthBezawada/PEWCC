@@ -3,14 +3,19 @@ package org.cytoscape.pewcc.internal.results.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
+import org.cytoscape.app.swing.CySwingAppAdapter;
 
 import org.cytoscape.model.CyNetwork;
+import org.cytoscape.model.CyNetworkManager;
 import org.cytoscape.model.CyNode;
 import org.cytoscape.pewcc.internal.PEWCCapp;
 import org.cytoscape.pewcc.internal.results.CytoscapeResultViewerPanel;
-import org.cytoscape.task.create.NewNetworkSelectedNodesAndEdgesTaskFatory;
+import org.cytoscape.task.create.NewNetworkSelectedNodesAndEdgesTaskFactory;
 import org.cytoscape.work.swing.DialogTaskManager;
 
 /**
@@ -46,8 +51,9 @@ public class ExtractClusterAction extends AbstractAction {
 		
 		resultViewer.selectNodes(selectedNodes);
 		
-		NewNetworkSelectedNodesAndEdgesTaskFatory taskFactory =
-				this.resultViewer.getCytoscapeApp().getService(NewNetworkSelectedNodesAndEdgesTaskFatory.class);
+		CySwingAppAdapter appAdapter = this.resultViewer.getCytoscapeApp().getService(CySwingAppAdapter.class);
+		NewNetworkSelectedNodesAndEdgesTaskFactory taskFactory = appAdapter.get_NewNetworkSelectedNodesAndEdgesTaskFactory();
+				
 		if (taskFactory == null) {
 			app.showBugMessage("Cannot create network representation for the cluster:\n" +
 					"New network creation factory is not registered.");
@@ -63,5 +69,24 @@ public class ExtractClusterAction extends AbstractAction {
 		}
 		
 		taskManager.execute(taskFactory.createTaskIterator(network));
-	}
+                this.resultViewer.incrementClusterCount();
+                
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ExtractClusterAction.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                String currentNetworkName = network.getRow(network).get(CyNetwork.NAME, String.class);
+                Set<CyNetwork> allnetworks = this.resultViewer.getCytoscapeApp().getService(CyNetworkManager.class).getNetworkSet();
+                        
+                long maxSUID = Integer.MIN_VALUE;
+                for(CyNetwork net : allnetworks){
+                    if(net.getSUID() > maxSUID)
+                        maxSUID = net.getSUID();
+                }
+                CyNetwork newnet = this.resultViewer.getCytoscapeApp().getService(CyNetworkManager.class).getNetwork(maxSUID);
+                newnet.getRow(newnet).set(CyNetwork.NAME, currentNetworkName + " Cluster extracted " + this.resultViewer.getclustersExtracted());
+
+        }
 }
