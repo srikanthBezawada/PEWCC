@@ -6,13 +6,14 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 import org.cytoscape.pewcc.internal.PEWCCapp;
 import org.cytoscape.pewcc.internal.logic.PEWCCCluster;
 import org.cytoscape.pewcc.internal.results.CytoscapeResultViewerPanel;
 
 //import uk.ac.rhul.cs.cl1.NodeSet;
 
-/**
+/**I
  * Action that saves the names of the members of all clusters
  * in the result viewer to a file on the disk.
  * 
@@ -27,7 +28,9 @@ public class SaveClusteringAction extends SaveClusterAction {
 				"Save the clustering to a file");
 		
 		PEWCCapp app = resultViewer.getCytoscapeApp();
-		/*
+                //this.putValue(AbstractAction.SMALL_ICON, UIManager.getIcon("FileView.computerIcon"));
+                this.putValue(AbstractAction.SMALL_ICON, UIManager.getIcon("InternalFrame.maximizeIcon"));
+                /*
                 URL url = app.getResource(app.getResourcePathName() + "/save.png");
 		if (url != null) {
 			this.putValue(AbstractAction.SMALL_ICON, new ImageIcon(url));

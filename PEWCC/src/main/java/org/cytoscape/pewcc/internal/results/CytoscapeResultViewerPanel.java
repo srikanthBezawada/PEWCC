@@ -17,6 +17,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
+import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -461,13 +462,11 @@ public class CytoscapeResultViewerPanel extends ResultViewerPanel implements
 		public CloseAction(CytoscapeResultViewerPanel panel) {
 			super("Close");
 			this.panel = panel;
+			this.putValue(AbstractAction.SMALL_ICON, UIManager.getIcon("InternalFrame.closeIcon"));
 			this.putValue(AbstractAction.SHORT_DESCRIPTION,
-					"Close this result panel");
-			//TODO
-			//URL url = pewccapp.getResource(pewccapp.getResourcePathName() + "/close.png");
-			//if (url != null) {
-			//	this.putValue(AbstractAction.SMALL_ICON, new ImageIcon(url));
-			//}
+				"Close this result panel");
+                    
+                       
 		}
 		
 		public void actionPerformed(ActionEvent event) {
