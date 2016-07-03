@@ -14,11 +14,9 @@ public class PEWCCCluster {
     private List<CyNode> subnodeList;
     private List<CyEdge> subedgeList;
     private double wcc;
-    private CyNode centernode;
     
-    public PEWCCCluster(CyNetwork subnetwork, CyNode centernode, double wcc) {
+    public PEWCCCluster(CyNetwork subnetwork, double wcc) {
         this.subnetwork = subnetwork;
-        this.centernode = centernode;
         this.subnodeList = subnetwork.getNodeList();
         this.subedgeList = subnetwork.getEdgeList();
         this.wcc = wcc;

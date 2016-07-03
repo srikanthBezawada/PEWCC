@@ -3,6 +3,7 @@ package org.cytoscape.pewcc.internal.logic;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.cytoscape.model.CyEdge;
@@ -11,9 +12,6 @@ import org.cytoscape.model.CyNode;
 import org.cytoscape.model.subnetwork.CyRootNetwork;
 import org.cytoscape.model.subnetwork.CySubNetwork;
 import org.cytoscape.pewcc.internal.PEWCCapp;
-import org.cytoscape.pewcc.internal.PEWCCgui;
-import org.cytoscape.pewcc.internal.logic.PEWCCCluster;
-import org.cytoscape.pewcc.internal.logic.Result;
 import org.cytoscape.view.model.CyNetworkView;
 
 public class PEWCClogic extends Thread {
@@ -44,8 +42,8 @@ public class PEWCClogic extends Thread {
         List<CyEdge> neightbourEdgeList;
         int counter = 0;
         double wcc = 0.0;
-        
-        Result result = new Result();
+       
+        Set<PEWCCCluster> clusters = new HashSet<PEWCCCluster>();
         for(CyNode cprotein : nodeList) {
             neighbourNodeList = network.getNeighborList(cprotein, CyEdge.Type.ANY);
             neighbourNodeList.add(cprotein);
@@ -55,7 +53,7 @@ public class PEWCClogic extends Thread {
                 subNetTemp = root.addSubNetwork(neighbourNodeList, neightbourEdgeList);
                 
                 while(subNetTemp.getNodeCount() > 3) {
-                    wcc = findwcc(subNetTemp, cprotein);
+                    //wcc = findwcc(subNetTemp, cprotein);
                     remnodeList.add(findNodeToRemove(subNetTemp, cprotein));
                     subNetTemp.removeNodes(remnodeList);
                     remnodeList.clear();
@@ -98,8 +96,8 @@ public class PEWCClogic extends Thread {
                 System.out.println(" : "+ wcc);
                 System.out.println("Complex");
                 */
-                PEWCCCluster C = new PEWCCCluster(subNet, cprotein, wcc);
-                result.add(C);
+                PEWCCCluster C = new PEWCCCluster(subNet, wcc);
+                clusters.add(C);
                 neighbourNodeList.clear();
                 neightbourEdgeList.clear();
                 rejoinList.clear();
@@ -111,19 +109,20 @@ public class PEWCClogic extends Thread {
         }
         /*
         System.out.println(" Printing complexes Start after removing duplicates------");
-        for(Complex c : res.getComplexes()) {
+        for(PEWCCCluster c : result.getComplexes()) {
             System.out.println("------");
-            for(CyNode n : c.subnodeList) {
+            for(CyNode n : c.getNodes()) {
                 System.out.println(network.getRow(n).get(CyNetwork.NAME, String.class));
             }
-            System.out.println("wcc : "+c.getwcc());
-            System.out.println("------");
+            //System.out.println("wcc : "+c.getwcc());
+            //System.out.println("------");
         }
         System.out.println(" End -------");
         */
+        //merge(result);
         
         
-        pewccapp.resultsCalculated(result, network);
+        pewccapp.resultsCalculated(clusters, network);
         
         long endTime = System.currentTimeMillis();
         long difference = endTime - startTime;
@@ -188,6 +187,115 @@ public class PEWCClogic extends Thread {
     /*
     public void printNode(CyNetwork network, CyNode n) {
         System.out.println("node" +network.getRow(n).get(CyNetwork.NAME, String.class));
+    }
+    */
+    
+    /*
+    public void merge(Result result){
+        double merge_threshold = 0.75;
+        double filter_threshold = 0.25;
+        CyRootNetwork root = ((CySubNetwork)network).getRootNetwork();
+        
+        Set<PEWCCCluster> unmergedSets = result.getComplexes();
+        //
+        List<PEWCCCluster> unmergedLists = new ArrayList<PEWCCCluster>();
+        unmergedLists.addAll(unmergedSets);
+        //
+        Set<CyNode> mergedNodeSets;
+        Set<CyEdge> mergedEdgeSets;
+        List<CyNode> nodesToRemove = new ArrayList<CyNode>();
+        CyNetwork mergedsubNet;
+        PEWCCCluster mergedCluster, smallerComplex;
+        
+        Iterator<PEWCCCluster> outer = unmergedLists.iterator();
+        //
+        int temp=0;
+        
+        while(outer.hasNext()) {
+            PEWCCCluster C1 = outer.next();
+            Iterator<PEWCCCluster> inner = unmergedLists.iterator();
+            
+            while(inner.hasNext()) {
+                PEWCCCluster C2 = inner.next();
+                
+                if(C1.equals(C2)){
+                    continue;
+                }
+                
+                if(C1.getNodes().size() <= C2.getNodes().size()) {
+                    smallerComplex = C1;
+                } else {
+                    smallerComplex = C2;
+                }
+                
+                mergedNodeSets = intersection(C1.getNodes(), C2.getNodes());
+                
+                if(mergedNodeSets.size() >= smallerComplex.getNodes().size() * merge_threshold) {
+                    mergedNodeSets = nodesUnion(C1.getNodes(), C2.getNodes());
+                    mergedEdgeSets = edgesUnion(C1.getEdges(), C2.getEdges());
+                    mergedsubNet = root.addSubNetwork(mergedNodeSets, mergedEdgeSets);
+                
+                    double cutoff = mergedNodeSets.size() * filter_threshold;
+                    for(CyNode n : mergedNodeSets) {
+                        if(mergedsubNet.getNeighborList(n, CyEdge.Type.ANY).size() < cutoff) {
+                            nodesToRemove.add(n);
+                        }
+                    }
+                    
+                    mergedsubNet.removeNodes(nodesToRemove);
+                    mergedCluster = new PEWCCCluster(mergedsubNet, 0);
+                    
+                    temp = result.getComplexes().size();
+                    result.remove(C1);
+                    temp = result.getComplexes().size();
+                    result.remove(C2);
+                    temp = result.getComplexes().size();
+                    
+                    if(mergedCluster.getNodes().size() <3) {
+                        //System.out.println("YES");
+                    }
+                    
+                    result.add(mergedCluster);
+                    temp = result.getComplexes().size();
+                    temp = temp;
+                    nodesToRemove.clear();
+                } 
+            }
+        }
+        
+        //return unmerged;
+    }
+    
+    public Set<CyNode> intersection(List<CyNode> setA, List<CyNode> setB) {
+        Set<CyNode> tmp = new HashSet<CyNode>();
+        for (CyNode x : setA) {
+            if (setB.contains(x)) {
+                tmp.add(x);
+            }
+        }
+        return tmp;    
+    }
+    
+    public Set<CyNode> nodesUnion(List<CyNode> setA, List<CyNode> setB) {
+        Set<CyNode> tmp = new HashSet<CyNode>();
+        for (CyNode x : setA) {
+            tmp.add(x);
+        }
+        for (CyNode x : setB) {
+            tmp.add(x);
+        }
+        return tmp;    
+    }
+    
+    public <CyEdge> Set<CyEdge> edgesUnion(List<CyEdge> setA, List<CyEdge> setB) {
+        Set<CyEdge> tmp = new HashSet<CyEdge>();
+        for (CyEdge x : setA) {
+            tmp.add(x);
+        }
+        for (CyEdge x : setB) {
+            tmp.add(x);
+        }
+        return tmp;    
     }
     */
     

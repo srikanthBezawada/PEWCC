@@ -3,6 +3,7 @@ package org.cytoscape.pewcc.internal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import javax.swing.JOptionPane;
@@ -13,7 +14,6 @@ import org.cytoscape.model.CyNetworkManager;
 import org.cytoscape.pewcc.internal.logic.PEWCCCluster;
 import org.cytoscape.pewcc.internal.logic.PEWCClogic;
 //import org.cytoscape.pewcc.internal.results.CytoscapeResultViewerPanel;
-import org.cytoscape.pewcc.internal.logic.Result;
 import org.cytoscape.pewcc.internal.results.CytoscapeResultViewerPanel;
 import org.cytoscape.view.model.CyNetworkView;
 import org.cytoscape.view.model.CyNetworkViewManager;
@@ -48,14 +48,14 @@ public class PEWCCapp {
     
     
     
-    public void resultsCalculated(Result result, CyNetwork currentnetwork) {
-        if(result == null)
+    public void resultsCalculated(Set<PEWCCCluster> clusters, CyNetwork currentnetwork) {
+        if(clusters.isEmpty())
             return;
         
         CytoscapeResultViewerPanel resultsPanel;
         resultsPanel = new CytoscapeResultViewerPanel(this, currentnetwork);
         List<PEWCCCluster> res = new ArrayList<PEWCCCluster>();
-        res.addAll(result.getComplexes());
+        res.addAll(clusters);
         resultsPanel.setResult(res);
         resultsPanel.addToCytoscapeResultPanel();
         
