@@ -51,8 +51,7 @@ public class ExtractClusterAction extends AbstractAction {
 		
 		resultViewer.selectNodes(selectedNodes);
 		
-		CySwingAppAdapter appAdapter = this.resultViewer.getCytoscapeApp().getService(CySwingAppAdapter.class);
-		NewNetworkSelectedNodesAndEdgesTaskFactory taskFactory = appAdapter.get_NewNetworkSelectedNodesAndEdgesTaskFactory();
+		NewNetworkSelectedNodesAndEdgesTaskFactory taskFactory = app.getService(NewNetworkSelectedNodesAndEdgesTaskFactory.class);
 				
 		if (taskFactory == null) {
 			app.showBugMessage("Cannot create network representation for the cluster:\n" +
