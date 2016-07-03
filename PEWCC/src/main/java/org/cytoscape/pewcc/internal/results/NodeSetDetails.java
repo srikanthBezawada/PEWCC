@@ -18,9 +18,9 @@ public class NodeSetDetails implements Comparable<NodeSetDetails>{
         sb.append(cluster.getEdges().size());
         sb.append("<br>");
 
-        sb.append("Clustering coefficient: ");
-        sb.append(cluster.getwcc());
-        sb.append("<br>");
+        //sb.append("Clustering coefficient: ");
+        //sb.append(cluster.getwcc());
+        //sb.append("<br>");
 
         sb.append("</html>");
 
@@ -37,7 +37,7 @@ public class NodeSetDetails implements Comparable<NodeSetDetails>{
         final int BEFORE = -1;
         final int EQUAL  = 0;
         final int AFTER  = 1;
-
+        /*
         if (this == other)
             return EQUAL;
 
@@ -52,6 +52,7 @@ public class NodeSetDetails implements Comparable<NodeSetDetails>{
         } else if(wccThis > wccThat){
             return BEFORE;
         }
+        */
         return EQUAL;       
             
     }
