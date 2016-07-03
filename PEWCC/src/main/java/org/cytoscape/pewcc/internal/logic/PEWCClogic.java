@@ -97,7 +97,9 @@ public class PEWCClogic extends Thread {
                 System.out.println("Complex");
                 */
                 PEWCCCluster C = new PEWCCCluster(subNet, wcc);
+                if(subNet.getEdgeList().size() >= 3)
                 clusters.add(C);
+                
                 neighbourNodeList.clear();
                 neightbourEdgeList.clear();
                 rejoinList.clear();
@@ -119,9 +121,9 @@ public class PEWCClogic extends Thread {
         }
         System.out.println(" End -------");
         */
-        //merge(result);
         
         
+        merge(clusters);
         pewccapp.resultsCalculated(clusters, network);
         
         long endTime = System.currentTimeMillis();
@@ -190,17 +192,15 @@ public class PEWCClogic extends Thread {
     }
     */
     
-    /*
-    public void merge(Result result){
-        double merge_threshold = 0.75;
-        double filter_threshold = 0.25;
+    
+    public void merge(Set<PEWCCCluster> clusters){
+        double merge_threshold = 0.97;
+        double filter_threshold = 0.20;
         CyRootNetwork root = ((CySubNetwork)network).getRootNetwork();
         
-        Set<PEWCCCluster> unmergedSets = result.getComplexes();
-        //
         List<PEWCCCluster> unmergedLists = new ArrayList<PEWCCCluster>();
-        unmergedLists.addAll(unmergedSets);
-        //
+        unmergedLists.addAll(clusters);
+        
         Set<CyNode> mergedNodeSets;
         Set<CyEdge> mergedEdgeSets;
         List<CyNode> nodesToRemove = new ArrayList<CyNode>();
@@ -208,8 +208,6 @@ public class PEWCClogic extends Thread {
         PEWCCCluster mergedCluster, smallerComplex;
         
         Iterator<PEWCCCluster> outer = unmergedLists.iterator();
-        //
-        int temp=0;
         
         while(outer.hasNext()) {
             PEWCCCluster C1 = outer.next();
@@ -245,25 +243,15 @@ public class PEWCClogic extends Thread {
                     mergedsubNet.removeNodes(nodesToRemove);
                     mergedCluster = new PEWCCCluster(mergedsubNet, 0);
                     
-                    temp = result.getComplexes().size();
-                    result.remove(C1);
-                    temp = result.getComplexes().size();
-                    result.remove(C2);
-                    temp = result.getComplexes().size();
+                    clusters.remove(C1);
+                    clusters.remove(C2);
                     
-                    if(mergedCluster.getNodes().size() <3) {
-                        //System.out.println("YES");
-                    }
-                    
-                    result.add(mergedCluster);
-                    temp = result.getComplexes().size();
-                    temp = temp;
+                    clusters.add(mergedCluster);
                     nodesToRemove.clear();
                 } 
             }
         }
-        
-        //return unmerged;
+      
     }
     
     public Set<CyNode> intersection(List<CyNode> setA, List<CyNode> setB) {
@@ -297,7 +285,7 @@ public class PEWCClogic extends Thread {
         }
         return tmp;    
     }
-    */
+    
     
     
 }
