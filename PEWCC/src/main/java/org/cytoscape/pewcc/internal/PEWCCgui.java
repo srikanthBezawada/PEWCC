@@ -17,7 +17,6 @@ import org.cytoscape.model.events.NetworkAddedEvent;
 import org.cytoscape.model.events.NetworkAddedListener;
 import org.cytoscape.model.events.NetworkDestroyedEvent;
 import org.cytoscape.model.events.NetworkDestroyedListener;
-import org.cytoscape.pewcc.internal.logic.PEWCClogic;
 
 import org.cytoscape.view.model.CyNetworkView;
 
@@ -70,8 +69,6 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         networkPanel = new javax.swing.JPanel();
         networkLabel = new javax.swing.JLabel();
         networkComboBox = new javax.swing.JComboBox();
-        cliqueLabel = new javax.swing.JLabel();
-        cliqueValue = new javax.swing.JTextField();
         joinPLabel = new javax.swing.JLabel();
         joinPValue = new javax.swing.JTextField();
         startB = new javax.swing.JButton();
@@ -93,11 +90,6 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         networkPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Select the network"));
 
         networkLabel.setText("Network");
-
-        cliqueLabel.setText("Clique size");
-
-        cliqueValue.setText("3");
-        cliqueValue.setToolTipText("Interactions below the threshold will be removed");
 
         joinPLabel.setText("Join parameter");
 
@@ -168,14 +160,11 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, networkPanelLayout.createSequentialGroup()
                         .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(networkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cliqueLabel)
                             .addComponent(joinPLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                         .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(networkComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(joinPValue, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
-                                .addComponent(cliqueValue, javax.swing.GroupLayout.Alignment.LEADING)))))
+                            .addComponent(joinPValue, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(28, 28, 28))
         );
         networkPanelLayout.setVerticalGroup(
@@ -185,19 +174,15 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
                 .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(networkLabel)
                     .addComponent(networkComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cliqueLabel)
-                    .addComponent(cliqueValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(joinPLabel)
                     .addComponent(joinPValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(startB, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addGap(48, 48, 48)
                 .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(helpB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(exitB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -248,10 +233,10 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     private void startBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBActionPerformed
         CyNetwork network = getSelectedNetwork();
         CyNetworkView networkview;
-        PEWCClogic logicThread;
+        
         if(network != null){
             networkview = pewccapp.getApplicationManager().getCurrentNetworkView();
-            pewccapp.runAlgorithm(network, networkview, cliqueValueValidate(cliqueValue), joinPValueValidate(joinPValue));
+            pewccapp.runAlgorithm(network, networkview, 3, joinPValueValidate(joinPValue));
             
         } else{
             startB.setEnabled(false);
@@ -286,17 +271,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         statusLabel.setText(msg);
     }
     
-    public int cliqueValueValidate(javax.swing.JTextField jtf){
-        int cliqueValue = 3;
-        try{
-            cliqueValue = Integer.parseInt(jtf.getText());
-        } catch(NumberFormatException e){
-            System.out.println("Number format exception");
-        } catch(NullPointerException e){
-            System.out.println("String is null");
-        }
-        return cliqueValue;
-    }
+    
     
     public double joinPValueValidate(javax.swing.JTextField jtf) {
         double joinPValue = 0.0;
@@ -350,8 +325,6 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JLabel cliqueLabel;
-    private javax.swing.JTextField cliqueValue;
     private javax.swing.JButton exitB;
     private javax.swing.JLabel headingLabel;
     private javax.swing.JButton helpB;
