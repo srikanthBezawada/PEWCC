@@ -260,14 +260,12 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     }//GEN-LAST:event_startBActionPerformed
 
     private void helpBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBActionPerformed
-        //PEhelp help = new PEhelp();
-        //help.setText(1);
-        //help.setVisible(true);
-        // TODO add your handling code here:
+        PEWCChelp help = new PEWCChelp();
+        help.setText(1);
+        help.setVisible(true);
     }//GEN-LAST:event_helpBActionPerformed
 
     private void exitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBActionPerformed
-        // TODO add your handling code here:
         deactivate();
     }//GEN-LAST:event_exitBActionPerformed
     
