@@ -272,6 +272,12 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     }//GEN-LAST:event_helpBActionPerformed
 
     private void exitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBActionPerformed
+        statusBar.setIndeterminate(false);
+        statusLabel.setText("Closing this menu");
+        if(pewccapp.getPEWCClogic().isAlive()) {
+            pewccapp.getPEWCClogic().end();
+            startB.setEnabled(true);
+        }
         deactivate();
     }//GEN-LAST:event_exitBActionPerformed
 
