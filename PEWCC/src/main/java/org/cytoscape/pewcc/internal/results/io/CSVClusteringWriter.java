@@ -49,7 +49,7 @@ public class CSVClusteringWriter extends AbstractClusteringWriter {
 			OutputStream stream) throws IOException {
 		PrintWriter wr = new PrintWriter(stream);
 		String[] parts = {
-				"Cluster", "Size", "wcc", "Members"
+				"Cluster", "Size", "Members"
 		};
 		
 		int clusterIndex = 0;
@@ -61,8 +61,7 @@ public class CSVClusteringWriter extends AbstractClusteringWriter {
 			
 			parts[0] = Integer.toString(clusterIndex);
 			parts[1] = Integer.toString(nodeSet.getNodes().size());
-                        parts[2] = Double.toString(nodeSet.getwcc());
-			parts[3] = quote(nodeSet.toString(" "));
+			parts[2] = quote(nodeSet.toString(" "));
 			
 			wr.println(StringUtils.join(parts, columnSep));
 		}
