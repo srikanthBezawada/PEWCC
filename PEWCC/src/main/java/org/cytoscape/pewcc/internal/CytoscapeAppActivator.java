@@ -22,10 +22,8 @@ public class CytoscapeAppActivator extends AbstractCyActivator {
     
     public void start(BundleContext context) throws Exception {
         this.context = context;
-        PEWCCapp pewccapp = new PEWCCapp(this);
-        
-        registerAllServices(context, pewccapp, new Properties());
-        
+        registerService(new PEWCCapp(this), PEWCCapp.class);
+  
     }
     
     /**
