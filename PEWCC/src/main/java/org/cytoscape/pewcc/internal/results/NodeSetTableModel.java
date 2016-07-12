@@ -23,7 +23,7 @@ import org.cytoscape.pewcc.internal.results.standardgraph.GraphLayoutAlgorithm;
 
 public class NodeSetTableModel extends AbstractTableModel {
     /** Column headers for the simple mode */
-    String[] currentHeaders = { "Cluster", "Details" };
+    String[] currentHeaders = { "Cluster", "Sort by size" };
 
     /** Column classes for the simple mode */
     Class<?>[] currentClasses = { ImageIcon.class, NodeSetDetails.class };
