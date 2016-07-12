@@ -37,22 +37,22 @@ public class NodeSetDetails implements Comparable<NodeSetDetails>{
         final int BEFORE = -1;
         final int EQUAL  = 0;
         final int AFTER  = 1;
-        /*
+        
         if (this == other)
             return EQUAL;
 
         if (this.cluster.equals(other.cluster))
             return EQUAL;
 
-        double wccThis = this.cluster.getwcc();
-        double wccThat = other.cluster.getwcc();
+        double sizeThis = this.cluster.getNodes().size();
+        double sizeThat = other.cluster.getNodes().size();
 
-        if (wccThis < wccThat){
+        if (sizeThis < sizeThat){
             return AFTER;
-        } else if(wccThis > wccThat){
+        } else if(sizeThis > sizeThat){
             return BEFORE;
         }
-        */
+        
         return EQUAL;       
             
     }
