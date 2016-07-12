@@ -92,6 +92,12 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
 
         networkLabel.setText("Network");
 
+        networkComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                networkComboBoxActionPerformed(evt);
+            }
+        });
+
         joinPLabel.setText("Join parameter");
 
         joinPValue.setText("0.5");
@@ -276,6 +282,10 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
             startB.setEnabled(true);
         }
     }//GEN-LAST:event_stopButtonActionPerformed
+
+    private void networkComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_networkComboBoxActionPerformed
+        statusLabel.setText("status");
+    }//GEN-LAST:event_networkComboBoxActionPerformed
     
     public void startComputation(){
         startB.setEnabled(false);
@@ -347,7 +357,6 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     }
     
     public CyNetwork getSelectedNetwork() {
-        statusLabel.setText("status");
         for (CyNetwork net : pewccapp.getNetworkManager().getNetworkSet()) {
                 String networkTitle = net.getRow(net).get("name", String.class);
                 if (networkTitle.equals(networkComboBox.getSelectedItem()))
