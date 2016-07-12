@@ -75,6 +75,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         statusPanel = new javax.swing.JPanel();
         statusBar = new javax.swing.JProgressBar();
         statusLabel = new javax.swing.JLabel();
+        stopButton = new javax.swing.JButton();
         helpB = new javax.swing.JButton();
         exitB = new javax.swing.JButton();
 
@@ -108,6 +109,15 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
 
         statusLabel.setText("status");
 
+        stopButton.setBackground(new java.awt.Color(255, 102, 102));
+        stopButton.setText("Stop");
+        stopButton.setEnabled(false);
+        stopButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
@@ -116,7 +126,10 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
                 .addContainerGap()
                 .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(statusBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(statusLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, statusPanelLayout.createSequentialGroup()
+                        .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(stopButton)))
                 .addContainerGap())
         );
         statusPanelLayout.setVerticalGroup(
@@ -124,7 +137,9 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addComponent(statusBar, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(statusLabel)
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(statusLabel)
+                    .addComponent(stopButton))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -198,7 +213,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(headingLabel)
                     .addComponent(networkPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,7 +233,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
                 .addGap(11, 11, 11))
         );
         layout.setVerticalGroup(
@@ -253,9 +268,18 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     private void exitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBActionPerformed
         deactivate();
     }//GEN-LAST:event_exitBActionPerformed
+
+    private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
+        if(pewccapp.getPEWCClogic().isAlive()) {
+            pewccapp.getPEWCClogic().end();
+            stopcalculus(null);
+            startB.setEnabled(true);
+        }
+    }//GEN-LAST:event_stopButtonActionPerformed
     
     public void startComputation(){
         startB.setEnabled(false);
+        stopButton.setEnabled(true);
         statusBar.setIndeterminate(true);
         statusBar.setVisible(true);
         statusLabel.setText("PEWCC algorithm is running ......");
@@ -263,14 +287,25 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     
     public void endComputation(){
         statusBar.setIndeterminate(false);
-        statusLabel.setText("<html>Completed complex detection, Check Results Panel!<br>You might want to recompute with different inputs <html>");
+        statusLabel.setText("<html>Completed! Check Results Panel <html>");
         startB.setEnabled(true);
+        stopButton.setEnabled(false);
     }
     
     public void calculatingresult(String msg){
         statusLabel.setText(msg);
     }
     
+    public void stopcalculus(String message) {
+        statusBar.setIndeterminate(false);
+        if(message == null) {
+            statusLabel.setText("Interrupted by the user, click run to restart");
+            stopButton.setEnabled(false);
+        }
+        else {
+            statusLabel.setText(message);
+        }    
+    }
     
     
     public double joinPValueValidate(javax.swing.JTextField jtf) {
@@ -312,6 +347,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     }
     
     public CyNetwork getSelectedNetwork() {
+        statusLabel.setText("status");
         for (CyNetwork net : pewccapp.getNetworkManager().getNetworkSet()) {
                 String networkTitle = net.getRow(net).get("name", String.class);
                 if (networkTitle.equals(networkComboBox.getSelectedItem()))
@@ -339,6 +375,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     private javax.swing.JProgressBar statusBar;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JPanel statusPanel;
+    private javax.swing.JButton stopButton;
     // End of variables declaration//GEN-END:variables
     @Override
     public void handleEvent(NetworkAddedEvent e){

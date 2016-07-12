@@ -20,6 +20,7 @@ public class PEWCClogic extends Thread {
     PEWCCapp pewccapp;
     double joinPValue;
     int cliqueNumber;
+    boolean stop;
     
     public PEWCClogic(PEWCCapp pewccapp, CyNetwork currentnetwork, CyNetworkView currentnetworkview, int cliqueNumber, double joinPValue) {
         this.pewccapp = pewccapp;
@@ -30,6 +31,7 @@ public class PEWCClogic extends Thread {
     }
     
     public void run(){
+        stop = false;
         pewccapp.getGui().startComputation();
         long startTime = System.currentTimeMillis();
         CyRootNetwork root = ((CySubNetwork)network).getRootNetwork();
@@ -45,6 +47,9 @@ public class PEWCClogic extends Thread {
        
         Set<PEWCCCluster> clusters = new HashSet<PEWCCCluster>();
         for(CyNode cprotein : nodeList) {
+            if(stop) {
+                return;
+            }
             neighbourNodeList = network.getNeighborList(cprotein, CyEdge.Type.ANY);
             neighbourNodeList.add(cprotein);
             if(neighbourNodeList.size() > 3) {
@@ -122,8 +127,13 @@ public class PEWCClogic extends Thread {
         System.out.println(" End -------");
         */
         
-        
+        if(stop) {
+            return;
+        }
         merge(clusters);
+        if(stop) {
+            return;
+        }
         pewccapp.resultsCalculated(clusters, network);
         
         long endTime = System.currentTimeMillis();
@@ -208,12 +218,20 @@ public class PEWCClogic extends Thread {
         PEWCCCluster mergedCluster, smallerComplex;
         
         Iterator<PEWCCCluster> outer = unmergedLists.iterator();
-        
+        if(stop) {
+            return;
+        }
         while(outer.hasNext()) {
+            if(stop) {
+                return;
+            }
             PEWCCCluster C1 = outer.next();
             Iterator<PEWCCCluster> inner = unmergedLists.iterator();
             
             while(inner.hasNext()) {
+                if(stop) {
+                    return;
+                }
                 PEWCCCluster C2 = inner.next();
                 
                 if(C1.equals(C2)){
@@ -286,6 +304,9 @@ public class PEWCClogic extends Thread {
         return tmp;    
     }
     
+    public void end(){
+        stop = true;
+    }
     
     
 }

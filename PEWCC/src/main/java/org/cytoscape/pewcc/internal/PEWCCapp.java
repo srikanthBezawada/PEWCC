@@ -24,6 +24,7 @@ public class PEWCCapp {
     private CySwingApplication app;
     private PEWCCgui gui;
     private ShowControlPanelAction scpa;
+    private PEWCClogic logicThread;
     public static final String APPNAME = "PEWCC - 1.0";
     /** A thread pool used for asynchronous operations within ClusterONE */
     private static Executor threadPool = null;
@@ -62,7 +63,6 @@ public class PEWCCapp {
     }
     
     public void runAlgorithm(CyNetwork network, CyNetworkView networkview, int cliqueValueValidate, double joinPValueValidate) {
-        PEWCClogic logicThread;
         logicThread = new PEWCClogic(this, network, networkview, cliqueValueValidate, joinPValueValidate);
         logicThread.start();           
     }
@@ -87,6 +87,9 @@ public class PEWCCapp {
         return gui;
     }
     
+    public PEWCClogic getPEWCClogic() {
+        return logicThread;
+    }
     
     public CyApplicationManager getApplicationManager() {
         return activator.getService(CyApplicationManager.class);
