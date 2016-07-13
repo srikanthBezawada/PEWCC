@@ -272,6 +272,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     }//GEN-LAST:event_helpBActionPerformed
 
     private void exitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBActionPerformed
+        if(pewccapp.getPEWCClogic() != null)
         pewccapp.getPEWCClogic().end();
         statusBar.setIndeterminate(false);
         startB.setEnabled(true);
@@ -282,14 +283,15 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     }//GEN-LAST:event_exitBActionPerformed
 
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
-        if(pewccapp.getPEWCClogic().isAlive()) {
+        if(pewccapp.getPEWCClogic() != null){
             pewccapp.getPEWCClogic().end();
-            stopcalculus(null);
-            networkComboBox.setEnabled(true);
-            joinPValue.setEnabled(true);
-            startB.setEnabled(true);
-            stopButton.setEnabled(false);
         }
+        //if(pewccapp.getPEWCClogic().isAlive()) {
+        stopcalculus(null);
+        networkComboBox.setEnabled(true);
+        joinPValue.setEnabled(true);
+        startB.setEnabled(true);
+        stopButton.setEnabled(false);
     }//GEN-LAST:event_stopButtonActionPerformed
 
     private void networkComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_networkComboBoxActionPerformed
