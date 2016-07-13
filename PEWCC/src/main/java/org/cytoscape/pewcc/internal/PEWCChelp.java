@@ -62,9 +62,9 @@ public class PEWCChelp extends javax.swing.JFrame {
                 "PEWCC : \n\n"
                 + "----\n"
                 + "About : \n\n"
-                + " PEWCC predicts protein complexes from PPI networks  \n"
+                + " - PEWCC predicts protein complexes from PPI networks  \n"
                 + "\n"
-                + "http://www.ncbi.nlm.nih.gov/pubmed/23688127"
+                + " - http://www.ncbi.nlm.nih.gov/pubmed/23688127"
                 + "\n\n"
                 + "Tutorial : \n"
                 + " - Click on Apps menu \n"
@@ -76,13 +76,15 @@ public class PEWCChelp extends javax.swing.JFrame {
                
                 + "Results : \n"
                 + " - Find the results of algorithm in the Results Panel \n"
+                + " - Sort results using the table header \n"
                 + " - Single click on each cluster selects \n" 
                 + " the corresponding nodes and edges in the view panel.  \n"
-                + " - Double click on a cluster extracts the correponding "
-                + " selected cluster/s as subnetwork."
-                + " - User can save selected cluster/s using extract selected cluster option" 
+                + " - Double click on a cluster extracts the correponding \n"
+                + " selected cluster/s as subnetwork \n."
+                + " - User can save selected cluster/s \n"
+                + " using extract selected cluster option" 
                 + " available upon right click on any cluster (or) \n" 
-                + " save all clusters using the right top button."
+                + " - Save all clusters using the right top button. \n"
                 + "----\n";
         
                 
