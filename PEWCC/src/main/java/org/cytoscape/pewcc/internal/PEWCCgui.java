@@ -97,6 +97,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
                 networkComboBoxActionPerformed(evt);
             }
         });
+        //networkComboBox.setEditable(false);
 
         joinPLabel.setText("Join parameter");
 
@@ -239,7 +240,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addGap(11, 11, 11))
         );
         layout.setVerticalGroup(
@@ -276,6 +277,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         statusBar.setIndeterminate(false);
         startB.setEnabled(true);
         networkComboBox.setEnabled(true);
+        joinPValue.setEnabled(true);
         stopButton.setEnabled(false);
         deactivate();
     }//GEN-LAST:event_exitBActionPerformed
@@ -284,7 +286,8 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         if(pewccapp.getPEWCClogic().isAlive()) {
             pewccapp.getPEWCClogic().end();
             stopcalculus(null);
-            //networkComboBox.setEnabled(true);
+            networkComboBox.setEnabled(true);
+            joinPValue.setEnabled(true);
             startB.setEnabled(true);
             stopButton.setEnabled(false);
         }
@@ -299,7 +302,8 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         stopButton.setEnabled(true);
         statusBar.setIndeterminate(true);
         statusBar.setVisible(true);
-        //networkComboBox.setEnabled(false);
+        networkComboBox.setEnabled(false);
+        joinPValue.setEnabled(false);
         statusLabel.setText("PEWCC algorithm is running ......");
     }
     
@@ -307,7 +311,8 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         statusBar.setIndeterminate(false);
         statusLabel.setText("<html>Completed! Check Results Panel <html>");
         startB.setEnabled(true);
-        //networkComboBox.setEnabled(true);
+        networkComboBox.setEnabled(true);
+        joinPValue.setEnabled(true);
         stopButton.setEnabled(false);
     }
     
