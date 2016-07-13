@@ -261,7 +261,6 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
             pewccapp.runAlgorithm(network, networkview, 3, joinPValueValidate(joinPValue));
             
         } else{
-            startB.setEnabled(false);
             JOptionPane.showMessageDialog(null, "IMPORT a network first! ", "No Network found ", JOptionPane.WARNING_MESSAGE);
         }  
     }//GEN-LAST:event_startBActionPerformed
