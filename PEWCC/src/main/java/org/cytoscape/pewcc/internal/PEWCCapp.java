@@ -13,7 +13,6 @@ import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.CyNetworkManager;
 import org.cytoscape.pewcc.internal.logic.PEWCCCluster;
 import org.cytoscape.pewcc.internal.logic.PEWCClogic;
-//import org.cytoscape.pewcc.internal.results.CytoscapeResultViewerPanel;
 import org.cytoscape.pewcc.internal.results.CytoscapeResultViewerPanel;
 import org.cytoscape.view.model.CyNetworkView;
 import org.cytoscape.view.model.CyNetworkViewManager;
@@ -172,42 +171,42 @@ public class PEWCCapp {
     }
     
     /**
-	 * Shows a message dialog box that informs the user about a possible bug in ClusterONE.
-	 * 
-	 * @param  message   the message to be shown
-	 */
-	public void showBugMessage(String message) {
-		StringBuilder sb = new StringBuilder(message);
-		sb.append("\n\n");
-		sb.append("This is possibly a bug in ");
-		sb.append(APPNAME);
-		sb.append(".\nPlease inform the developers about what you were doing and\n");
-		sb.append("what the expected result would have been.");
-		
-		JOptionPane.showMessageDialog(app.getJFrame(),
-				sb.toString(), "Possible bug in "+APPNAME,
-				JOptionPane.ERROR_MESSAGE);
-	}
-	
-	/**
-	 * Shows an error message in a dialog box
-	 * 
-	 * @param  message  the error message to be shown
-	 */
-	public void showErrorMessage(String message) {
-		JOptionPane.showMessageDialog(app.getJFrame(), message,
-				APPNAME, JOptionPane.ERROR_MESSAGE);
-	}
+    * Shows a message dialog box that informs the user about a possible bug in ClusterONE.
+    * 
+    * @param  message   the message to be shown
+    */
+    public void showBugMessage(String message) {
+            StringBuilder sb = new StringBuilder(message);
+            sb.append("\n\n");
+            sb.append("This is possibly a bug in ");
+            sb.append(APPNAME);
+            sb.append(".\nPlease inform the developers about what you were doing and\n");
+            sb.append("what the expected result would have been.");
 
-	/**
-	 * Shows a message dialog box that informs the user about something
-	 * 
-	 * @param  message  the message to be shown
-	 */
-	public void showInformationMessage(String message) {
-		JOptionPane.showMessageDialog(app.getJFrame(), message,
-				APPNAME, JOptionPane.INFORMATION_MESSAGE);
-	}
+            JOptionPane.showMessageDialog(app.getJFrame(),
+                            sb.toString(), "Possible bug in "+APPNAME,
+                            JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * Shows an error message in a dialog box
+     * 
+     * @param  message  the error message to be shown
+     */
+    public void showErrorMessage(String message) {
+            JOptionPane.showMessageDialog(app.getJFrame(), message,
+                            APPNAME, JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * Shows a message dialog box that informs the user about something
+     * 
+     * @param  message  the message to be shown
+     */
+    public void showInformationMessage(String message) {
+            JOptionPane.showMessageDialog(app.getJFrame(), message,
+                            APPNAME, JOptionPane.INFORMATION_MESSAGE);
+    }
 
    
     

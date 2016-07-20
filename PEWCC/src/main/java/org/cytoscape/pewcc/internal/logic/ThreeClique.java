@@ -1,7 +1,5 @@
 package org.cytoscape.pewcc.internal.logic;
 
-import java.util.HashSet;
-import org.cytoscape.model.CyEdge;
 import org.cytoscape.model.CyNode;
 
 public class ThreeClique {
