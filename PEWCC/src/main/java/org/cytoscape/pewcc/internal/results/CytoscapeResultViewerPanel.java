@@ -5,17 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.ref.WeakReference;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
@@ -68,7 +65,8 @@ public class CytoscapeResultViewerPanel extends ResultViewerPanel implements
 	 * This is used to assign unique numbers to each result panel in Cytoscape
 	 */
 	static private int lastUsedSerialNumber = 1;
-	protected int clustersExtracted = 0;
+	
+        protected int clustersExtracted = 0;
 	/**
 	 * Mapping from node IDs to real Cytoscape {@link CyNode} objects
 	 */
