@@ -251,7 +251,7 @@ public class ResultViewerPanel extends JPanel implements TableModelListener {
 			/* Sort on the details column by default if not in detailed mode */
 			
                         List<RowSorter.SortKey> list = new ArrayList<RowSorter.SortKey>();
-                        list.add(new RowSorter.SortKey(1, SortOrder.DESCENDING));
+                        list.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
                         rowSorter.setSortKeys(list);
 			
 			table.setRowSorter(rowSorter);
