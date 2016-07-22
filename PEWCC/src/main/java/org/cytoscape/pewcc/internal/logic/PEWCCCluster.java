@@ -66,14 +66,7 @@ public class PEWCCCluster {
     
     @Override
     public int hashCode() {
-        int hashCode = 1;
-        for(CyNode n: this.subnodeList) {
-            hashCode = hashCode+n.hashCode();
-        }
-        for(CyEdge e: this.subedgeList) {
-            hashCode = hashCode+e.hashCode();
-        }
-        return hashCode;
+        return subnodeList.size() + subnodeList.size();
     }
     
     public String[] getMemberNames() {

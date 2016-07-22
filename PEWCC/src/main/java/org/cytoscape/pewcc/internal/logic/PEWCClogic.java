@@ -259,7 +259,7 @@ public class PEWCClogic extends Thread {
                     }
                     
                     mergedsubNet.removeNodes(nodesToRemove);
-                    mergedCluster = new PEWCCCluster(mergedsubNet, 0);
+                    mergedCluster = new PEWCCCluster(mergedsubNet, 0.0);
                     
                     clusters.remove(C1);
                     clusters.remove(C2);
