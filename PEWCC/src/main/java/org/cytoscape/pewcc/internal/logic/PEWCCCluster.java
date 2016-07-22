@@ -15,11 +15,10 @@ public class PEWCCCluster {
     private List<CyEdge> subedgeList;
     private double wcc;
     
-    public PEWCCCluster(CyNetwork subnetwork, double wcc) {
+    public PEWCCCluster(CyNetwork subnetwork) {
         this.subnetwork = subnetwork;
         this.subnodeList = subnetwork.getNodeList();
         this.subedgeList = subnetwork.getEdgeList();
-        this.wcc = wcc;
     }
     
     public double getwcc() {
@@ -48,10 +47,13 @@ public class PEWCCCluster {
             return false;
         }    
         PEWCCCluster otherComplexRef = (PEWCCCluster)otherComplex;
-        if(otherComplexRef.subnodeList.size() != this.subnodeList.size() || otherComplexRef.subedgeList.size() != otherComplexRef.subedgeList.size()) {
+        if(otherComplexRef.subnodeList.size() != this.subnodeList.size()) {
             return false;
         }
-        
+        if(otherComplexRef.subedgeList.size() != otherComplexRef.subedgeList.size()) {
+            return false;
+        }
+        /*
         if(new HashSet<CyNode>(otherComplexRef.subnodeList).equals(new HashSet<CyNode>(this.subnodeList))) {
             if(new HashSet<CyEdge>(otherComplexRef.subedgeList).equals(new HashSet<CyEdge>(this.subedgeList))) {
                 return true;
@@ -59,14 +61,16 @@ public class PEWCCCluster {
         } else{
             return false;
         }
-        
-        
+        */
         return true;
     }
     
     @Override
     public int hashCode() {
-        return subnodeList.size() + subnodeList.size();
+        int hashCode = 1;
+        
+        return hashCode + subnodeList.size() + subedgeList.size();
+
     }
     
     public String[] getMemberNames() {

@@ -101,7 +101,7 @@ public class PEWCClogic extends Thread {
                 System.out.println(" : "+ wcc);
                 System.out.println("Complex");
                 */
-                PEWCCCluster C = new PEWCCCluster(subNet, wcc);
+                PEWCCCluster C = new PEWCCCluster(subNet);
                 if(subNet.getEdgeList().size() >= 3)
                 clusters.add(C);
                 
@@ -204,7 +204,7 @@ public class PEWCClogic extends Thread {
     
     
     public void merge(Set<PEWCCCluster> clusters){
-        double merge_threshold = 0.97;
+        double merge_threshold = 0.75;
         double filter_threshold = 0.20;
         CyRootNetwork root = ((CySubNetwork)network).getRootNetwork();
         
@@ -259,8 +259,8 @@ public class PEWCClogic extends Thread {
                     }
                     
                     mergedsubNet.removeNodes(nodesToRemove);
-                    mergedCluster = new PEWCCCluster(mergedsubNet, 0.0);
-                    
+                    mergedCluster = new PEWCCCluster(mergedsubNet);
+          
                     clusters.remove(C1);
                     clusters.remove(C2);
                     
