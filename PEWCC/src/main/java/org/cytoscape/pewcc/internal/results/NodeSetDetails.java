@@ -51,6 +51,14 @@ public class NodeSetDetails implements Comparable<NodeSetDetails>{
             return AFTER;
         } else if(sizeThis > sizeThat){
             return BEFORE;
+        } else {
+            double edgesizeThis = this.cluster.getEdges().size();
+            double edgesizeThat = other.cluster.getEdges().size();
+            if(edgesizeThis < edgesizeThat) {
+                return AFTER;
+            } else if(edgesizeThis > edgesizeThat) {
+                return BEFORE;
+            }
         }
         
         return EQUAL;       
