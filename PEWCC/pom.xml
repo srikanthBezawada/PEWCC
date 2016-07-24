@@ -201,6 +201,12 @@
 	  <artifactId>xbis</artifactId>
 	  <version>0.9.5</version>
 	 </dependency>
+         <dependency>
+	  <groupId>org.jgrapht</groupId>
+	  <artifactId>jgrapht-core</artifactId>
+	  <version>0.9.0</version>
+	  <type>jar</type>
+	 </dependency>
 	</dependencies>
         
        

@@ -61,8 +61,8 @@ public class PEWCCapp {
         
     }
     
-    public void runAlgorithm(CyNetwork network, CyNetworkView networkview, int cliqueValueValidate, double joinPValueValidate) {
-        logicThread = new PEWCClogic(this, network, networkview, cliqueValueValidate, joinPValueValidate);
+    public void runAlgorithm(CyNetwork network, CyNetworkView networkview, int cliqueValueValidate, double joinPValueValidate, double overlapValue) {
+        logicThread = new PEWCClogic(this, network, networkview, cliqueValueValidate, joinPValueValidate, overlapValue);
         logicThread.start();           
     }
     

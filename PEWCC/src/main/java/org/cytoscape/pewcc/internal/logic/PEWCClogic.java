@@ -13,21 +13,26 @@ import org.cytoscape.model.subnetwork.CyRootNetwork;
 import org.cytoscape.model.subnetwork.CySubNetwork;
 import org.cytoscape.pewcc.internal.PEWCCapp;
 import org.cytoscape.view.model.CyNetworkView;
+import org.jgrapht.UndirectedGraph;
+import org.jgrapht.alg.ConnectivityInspector;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 
 public class PEWCClogic extends Thread {
     CyNetwork network;
     CyNetworkView networkView;
     PEWCCapp pewccapp;
-    double joinPValue;
+    double joinPValue, overlapValue;
     int cliqueNumber;
     boolean stop;
     
-    public PEWCClogic(PEWCCapp pewccapp, CyNetwork currentnetwork, CyNetworkView currentnetworkview, int cliqueNumber, double joinPValue) {
+    public PEWCClogic(PEWCCapp pewccapp, CyNetwork currentnetwork, CyNetworkView currentnetworkview, int cliqueNumber, double joinPValue, double overlapValue) {
         this.pewccapp = pewccapp;
         this.network = currentnetwork;
         this.networkView = currentnetworkview;
         this.joinPValue = joinPValue;
         this.cliqueNumber = cliqueNumber;
+        this.overlapValue = overlapValue;
     }
     
     public void run(){
@@ -206,6 +211,64 @@ public class PEWCClogic extends Thread {
     */
     
     
+    public Set<PEWCCCluster> merge(Set<PEWCCCluster> clusters) {
+        Set<PEWCCCluster> newClusters = new HashSet<PEWCCCluster>();
+        List<PEWCCCluster> unmergedLists = new ArrayList<PEWCCCluster>();
+        unmergedLists.addAll(clusters);
+        
+        UndirectedGraph<PEWCCCluster, DefaultEdge> g = new SimpleGraph<PEWCCCluster, DefaultEdge>(DefaultEdge.class);
+        for(PEWCCCluster cluster : clusters) {
+            g.addVertex(cluster);
+        }
+        
+        Iterator<PEWCCCluster> outer = unmergedLists.iterator();
+        if(stop) {
+            return null;
+        }
+        while(outer.hasNext()) {
+            if(stop) {
+                return null;
+            }
+            PEWCCCluster C1 = outer.next();
+            Iterator<PEWCCCluster> inner = unmergedLists.iterator();
+            
+            while(inner.hasNext()) {
+                if(stop) {
+                    return null;
+                }
+                PEWCCCluster C2 = inner.next();
+                
+                if(C1.equals(C2)){
+                    continue;
+                }
+                
+                if(matchCoefficient(C1, C2) > overlapValue) {
+                    g.addEdge(C1, C2);
+                }
+            }
+        }
+        
+        
+        
+        ConnectivityInspector<PEWCCCluster, DefaultEdge> inspector = new ConnectivityInspector<PEWCCCluster, DefaultEdge>(g);
+        List<Set<PEWCCCluster>> connComponents = inspector.connectedSets();
+        for(Set<PEWCCCluster> component : connComponents) {
+            if(component.isEmpty() == false)
+            newClusters.add(mergeComponent(component));
+        }
+        
+        return newClusters;
+    }
+        
+    
+    public double matchCoefficient(PEWCCCluster C1, PEWCCCluster C2) {
+        double inter = intersection(C1.getNodes(), C2.getNodes()).size();
+        double matchCoeff = (inter * inter)/(C1.getNodes().size() * C2.getNodes().size());
+    
+        return matchCoeff;
+    }
+    
+    /*
     public Set<PEWCCCluster> merge(Set<PEWCCCluster> clusters){
         double merge_threshold = 0.75;
         double filter_threshold = 0.20;
@@ -277,6 +340,28 @@ public class PEWCClogic extends Thread {
         
         newClusters.removeAll(toRemove);
         return newClusters;
+    }
+    */
+    
+    public PEWCCCluster mergeComponent(Set<PEWCCCluster> component) {
+        Set<CyNode> nodesUnion = new HashSet<CyNode>();
+        Set<CyEdge> edgesUnion = new HashSet<CyEdge>();
+        CyRootNetwork root = ((CySubNetwork)network).getRootNetwork();
+        if(component.isEmpty()) {
+            return null;
+        }
+        for(PEWCCCluster C : component) {
+            if(component.size() == 1) {
+                return C;
+            } else{
+                nodesUnion.addAll(C.getNodes());
+                edgesUnion.addAll(C.getEdges());
+                CyNetwork mergedNetwork = root.addSubNetwork(nodesUnion, edgesUnion);
+                PEWCCCluster mergedCluster = new PEWCCCluster(mergedNetwork);
+                return mergedCluster;
+            }
+        }
+        return null;
     }
     
     public Set<CyNode> intersection(List<CyNode> setA, List<CyNode> setB) {

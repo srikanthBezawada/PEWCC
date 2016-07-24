@@ -78,6 +78,8 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         stopButton = new javax.swing.JButton();
         helpB = new javax.swing.JButton();
         exitB = new javax.swing.JButton();
+        overlapLabel = new javax.swing.JLabel();
+        overlapValue = new javax.swing.JTextField();
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -166,6 +168,10 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
             }
         });
 
+        overlapLabel.setText("Overlap threshold");
+
+        overlapValue.setText("0.8");
+
         javax.swing.GroupLayout networkPanelLayout = new javax.swing.GroupLayout(networkPanel);
         networkPanel.setLayout(networkPanelLayout);
         networkPanelLayout.setHorizontalGroup(
@@ -174,20 +180,27 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
                 .addGap(19, 19, 19)
                 .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(networkPanelLayout.createSequentialGroup()
-                        .addComponent(helpB, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(exitB, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(statusPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(startB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, networkPanelLayout.createSequentialGroup()
+                        .addComponent(overlapLabel)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(networkPanelLayout.createSequentialGroup()
                         .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(networkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(joinPLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
-                        .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(networkComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(joinPValue, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(28, 28, 28))
+                            .addGroup(networkPanelLayout.createSequentialGroup()
+                                .addComponent(helpB, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(exitB, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(statusPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(startB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, networkPanelLayout.createSequentialGroup()
+                                .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(networkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(joinPLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                                .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(networkComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(overlapValue, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(joinPValue, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)))))
+                        .addGap(28, 28, 28))))
         );
         networkPanelLayout.setVerticalGroup(
             networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,10 +214,14 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
                     .addComponent(joinPLabel)
                     .addComponent(joinPValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(overlapLabel)
+                    .addComponent(overlapValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
                 .addComponent(startB, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
+                .addGap(18, 18, 18)
                 .addGroup(networkPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(helpB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(exitB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -258,7 +275,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         
         if(network != null){
             networkview = pewccapp.getApplicationManager().getCurrentNetworkView();
-            pewccapp.runAlgorithm(network, networkview, 3, joinPValueValidate(joinPValue));
+            pewccapp.runAlgorithm(network, networkview, 3, joinPValueValidate(joinPValue), overlapValueValidate(overlapValue));
             
         } else{
             JOptionPane.showMessageDialog(null, "IMPORT a network first! ", "No Network found ", JOptionPane.WARNING_MESSAGE);
@@ -278,6 +295,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         startB.setEnabled(true);
         networkComboBox.setEnabled(true);
         joinPValue.setEnabled(true);
+        overlapValue.setEnabled(true);
         stopButton.setEnabled(false);
         deactivate();
     }//GEN-LAST:event_exitBActionPerformed
@@ -290,6 +308,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         stopcalculus(null);
         networkComboBox.setEnabled(true);
         joinPValue.setEnabled(true);
+        overlapValue.setEnabled(true);
         startB.setEnabled(true);
         stopButton.setEnabled(false);
     }//GEN-LAST:event_stopButtonActionPerformed
@@ -305,6 +324,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         statusBar.setVisible(true);
         networkComboBox.setEnabled(false);
         joinPValue.setEnabled(false);
+        overlapValue.setEnabled(false);
         statusLabel.setText("PEWCC algorithm is running ......");
     }
     
@@ -314,6 +334,7 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         startB.setEnabled(true);
         networkComboBox.setEnabled(true);
         joinPValue.setEnabled(true);
+        overlapValue.setEnabled(true);
         stopButton.setEnabled(false);
     }
     
@@ -345,7 +366,20 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         return joinPValue;
     }
     
-        protected void updateNetworkList() {
+    public double overlapValueValidate(javax.swing.JTextField jtf) {
+        double overlapValue = 0.0;
+        try{
+            overlapValue = Double.parseDouble(jtf.getText());
+        } catch(NumberFormatException e){
+            System.out.println("Number format exception");
+        } catch(NullPointerException e){
+            System.out.println("String is null");
+        }
+        return overlapValue;
+    }
+    
+    
+    protected void updateNetworkList() {
         final Set<CyNetwork> networks = pewccapp.getNetworkManager().getNetworkSet();
         final SortedSet<String> networkNames = new TreeSet<String>();
 
@@ -394,6 +428,8 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
     protected javax.swing.JComboBox networkComboBox;
     private javax.swing.JLabel networkLabel;
     private javax.swing.JPanel networkPanel;
+    private javax.swing.JLabel overlapLabel;
+    private javax.swing.JTextField overlapValue;
     private javax.swing.JButton startB;
     private javax.swing.JProgressBar statusBar;
     private javax.swing.JLabel statusLabel;
