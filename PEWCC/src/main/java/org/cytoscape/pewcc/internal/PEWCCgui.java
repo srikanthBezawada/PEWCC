@@ -463,6 +463,8 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         /* Activate the panel */
         cytoPanel.setSelectedIndex(cytoPanel.indexOfComponent(getComponent()));
         updateNetworkList();
+        joinPValue.setText("0.5");
+        overlapValue.setText("0.8");
     }
     
     /**
