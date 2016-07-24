@@ -53,6 +53,18 @@ public class PEWCCCluster {
         if(otherComplexRef.subedgeList.size() != otherComplexRef.subedgeList.size()) {
             return false;
         }
+        for(CyNode n : otherComplexRef.subnodeList) {
+            if(this.subnodeList.contains(n) == false) {
+                return false;
+            }
+        }
+        
+        for(CyEdge e : otherComplexRef.subedgeList) {
+            if(this.subedgeList.contains(e) == false) {
+                return false;
+            }
+        }
+        
         /*
         if(new HashSet<CyNode>(otherComplexRef.subnodeList).equals(new HashSet<CyNode>(this.subnodeList))) {
             if(new HashSet<CyEdge>(otherComplexRef.subedgeList).equals(new HashSet<CyEdge>(this.subedgeList))) {
