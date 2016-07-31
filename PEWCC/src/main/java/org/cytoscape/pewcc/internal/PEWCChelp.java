@@ -71,7 +71,7 @@ public class PEWCChelp extends javax.swing.JFrame {
                 + " - Click on PEWCC which opens \n"
                 + "   a tabbed panel in control panel \n"
                 + " - Select the network to be used \n"
-                + "   and input join parameter \n"
+                + " - Input join parameter and overlap threshold \n"
                 + " - Click on the Run button \n\n"
                
                 + "Results : \n"
@@ -80,7 +80,7 @@ public class PEWCChelp extends javax.swing.JFrame {
                 + " - Single click on each cluster selects \n" 
                 + " the corresponding nodes and edges in the view panel.  \n"
                 + " - Double click on a cluster extracts the correponding \n"
-                + " selected cluster/s as subnetwork \n."
+                + " selected cluster/s as subnetwork \n"
                 + " - User can save selected cluster/s \n"
                 + " using extract selected cluster option" 
                 + " available upon right click on any cluster (or) \n" 

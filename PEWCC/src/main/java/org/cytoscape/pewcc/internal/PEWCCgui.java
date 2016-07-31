@@ -275,7 +275,12 @@ public class PEWCCgui extends javax.swing.JPanel implements CytoPanelComponent, 
         
         if(network != null){
             networkview = pewccapp.getApplicationManager().getCurrentNetworkView();
-            pewccapp.runAlgorithm(network, networkview, 3, joinPValueValidate(joinPValue), overlapValueValidate(overlapValue));
+            double overlapV = overlapValueValidate(overlapValue);
+            if(overlapV == 0.0) {
+                JOptionPane.showMessageDialog(null, "Overlap Threshold should be greater than zero ! ", "Not A valid Overlap Threshold ", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            pewccapp.runAlgorithm(network, networkview, 3, joinPValueValidate(joinPValue), overlapV);
             
         } else{
             JOptionPane.showMessageDialog(null, "IMPORT a network first! ", "No Network found ", JOptionPane.WARNING_MESSAGE);

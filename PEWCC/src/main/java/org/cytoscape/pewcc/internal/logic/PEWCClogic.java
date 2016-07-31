@@ -242,7 +242,7 @@ public class PEWCClogic extends Thread {
                     continue;
                 }
                 
-                if(matchCoefficient(C1, C2) > overlapValue) {
+                if(matchCoefficient(C1, C2) >= overlapValue) {
                     g.addEdge(C1, C2);
                 }
             }
